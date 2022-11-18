@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %} ▽ | ARTICOLI {% endblock %}
+{% block content %}
+<h1 class = "titolo"><center>SCOSTAMENTO ARTICOLO</center> </h1>
+<form method = "POST">
+    <div class = "form-group">
+        <label for = "nrArt"> INSERISCI CODICE ARTICOLO DA CERCARE: </label>
+        <input type = "text" class="form-control" id = "nrArt" name = "nrArt" placeholder = "inserisci codice">
+        <br>
+        <br>
+        <button type = "submit" class = "btn btn-primary"> CERCA 🔍 </button>
+    </div>
+</form>
+<!---- FACCIO QUATTRO MINI TABELLA PER SPIEGARE LE COSE, a budget a mix std a mix eff consuntivo --->
+<div class = "container text-center">
+    <div class = "row">
+        <h1> {{nrArt}} </h1>
+        <div class = "col-md-3">
+            <!--- TABELLA BUDGET --->
+            <table class = "table">
+            <tr class = "table_header">
+                <th> </th>
+                <th> BUDGET</th>
+            </tr>
+            <tr class = "table__row" >
+                <th> Prezzo Unitario </th>
+                <th> {{puB}} €</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Qta Venduta </th>
+                <th> {{qtvB}} pz</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Mix </th>
+                <th> {{mB}} %</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo MP </th>
+                <th> {{cmpB}} €</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo Lav </th>
+                <th> {{clavB}} €</th>
+            </tr>
+            </table>
+        </div>
+          <div class = "col-md-3">
+            <!--- TABELLA MIX STANDARD --->
+            <table class = "table">
+            <tr class = "table_header">
+                <th> </th>
+                <th> MIX STD </th>
+            </tr>
+            <tr class = "table__row" >
+                <th> Prezzo Unitario </th>
+                <th> {{puMS}} €</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Qta Venduta </th>
+                <th> {{qtvMS}} pz</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Mix </th>
+                <th> {{mMS}} %</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo MP </th>
+                <th> {{cmMS}} €</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo Lav </th>
+                <th> {{clavMS}} €</th>
+            </tr>
+            </table>
+        </div>
+        <div class = "col-md-3">
+            <!--- TABELLA MIX EFFETTIVO --->
+            <table class = "table">
+            <tr class = "table_header">
+                <th> </th>
+                <th> MIX EFFETTIVO </th>
+            </tr>
+            <tr class = "table__row" >
+                <th> Prezzo Unitario </th>
+                <th> {{puME}} €</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Qta Venduta </th>
+                <th> {{qtvC}} pz</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Mix </th>
+                <th> {{mME}} %</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo MP </th>
+                <th> {{cmME}} €</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo Lav </th>
+                <th> {{clavME}} €</th>
+            </tr>
+            </table>
+        </div>
+        <div class = "col-md-3">
+            <!----TABELLA CONSUNTIVO --->
+            <table class = "table">
+            <tr class = "table_header">
+                <th> </th>
+                <th> CONSUNTIVO </th>
+            </tr>
+            <tr class = "table__row" >
+                <th> Prezzo Unitario </th>
+                <th> {{puC}} €</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Qta Venduta </th>
+                <th> {{qtvC}} pz</th>
+            </tr>
+                <tr class = "table__row" >
+                <th> Mix </th>
+                <th> {{mC}} %</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo MP </th>
+                <th> {{cmpC}} €</th>
+            </tr>
+                 <tr class = "table__row" >
+                <th> Costo Lav </th>
+                <th> {{clavC}} €</th>
+            </tr>
+            </table>
+        </div>
+    </div>
+    <div class = "row text-center">
+        <hr>
+        <h4> Dati Aggiuntivi :</h4>
+        <p></p>
+        <br>
+        <label for="mdcB"> MARGINE DI CONTRIBUZIONE (BUDGET)  </label> <p id ="mdcB"> {% if z == 1 %}{{(puB-(cmpB+clavB))|round(2,'common')}}{% elif z == 0 %}0.00{% endif %}</p>
+        <label for="mdcC"> MARGINE DI CONTRIBUZIONE (CONSUNTIVO)  </label> <p id ="mdcC"> {% if z == 1 %}{{(puC-(cmpC+clavC))|round(2,'common')}}{% elif z == 0 %}0.00{% endif %}</p>
+    </div>
+</div>
+{% endblock %}

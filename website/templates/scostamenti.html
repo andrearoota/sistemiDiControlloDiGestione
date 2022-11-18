@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} ▽ | SCOSTAMENTI
+{% endblock %}
+{% block content %}
+<table class = "table">
+    <h1 class = "titolo text-center"> SCOSTAMENTI COMPLESSIVI AZIENDALI
+    </h1>
+   <tr class = "table__header">
+      <th> </th>
+      <th> BUDGET</th>
+      <th> Δ1 </th>
+      <th> MIX STD </th>
+      <th> Δ2 </th>
+      <th> MIX EFF</th>
+      <th> Δ3 </th>
+      <th> CONSUNTIVO </th>
+   </tr>
+   <!--- visto che non riportiamo tutti i 413 articoli sennò verrebbe una tabella enorme riportiamo le quantità, i ricavi, gli scostamenti, i costi tot e il mol -->
+   <!-- QTA TOTALI (vendute) --->
+   <tr class = "table__row">
+      <td> QUANTITA' TOTALI </td>
+      <td> {{qtaB}} pz</td>
+      <td>{{qtaMS-qtaB}}</td>
+      <td>{{qtaMS}} pz</td>
+      <td>{{qtaME-qtaMS}}</td>
+      <td>{{qtaME}} pz</td>
+      <td>{{qtaC-qtaME}}</td>
+      <td>{{qtaC}} pz</td>
+   </tr>
+   <!--- RICAVi ----->
+   <tr class = "table__row">
+      <td> RICAVI CUMULATIVI</td>
+      <td>{{rB}} €</td>
+      <td>{{(rMS-rB)|round(2,'common')}} €</td>
+      <td>{{rMS}} €</td>
+      <td>{{(rME-rMS)|round(2,'common')}} €</td>
+      <td>{{rME}} €</td>
+      <td>{{(rC-rME)|round(2,'common')}} €</td>
+      <td>{{rC}} €</td>
+   </tr>
+     <!--- COSTI VARIABILI TOT ----->
+   <tr class = "table__row">
+       <td>COSTI VARIABILI TOT</td>
+       <td>{{cB}} €</td>
+       <td>{{(cMS-cB)|round(2,'common')}} €</td>
+       <td>{{cMS}} €</td>
+       <td>{{(cME-cMS)|round(2,'common')}} €</td>
+       <td>{{cME}} €</td>
+       <td>{{(cC-cME)|round(2,'common')}} €</td>
+       <td>{{cC}} €</td>
+   </tr>
+    <!--- MOL ----->
+   <tr class = "table__row">
+       <td>MARGINE OPERATIVO LORDO (MOL) </td>
+       <td>{{mB}} €</td>
+       <td>{{(mMS-mB)|round(2,'common')}} €</td>
+       <td>{{mMS}} €</td>
+       <td>{{(mME-mMS)|round(2,'common')}} €</td>
+       <td>{{mME}} €</td>
+       <td>{{(mC-mME)|round(2,'common')}} €</td>
+       <td>{{mC}} €</td>
+   </tr>
+</table>
+<hr>
+<div class = "row text-center">
+    <h4> DATI </h4>
+    <br>
+    <br>
+    <label> SCOSTAMENTI PREZZI/COSTI</label> <p> {{(mC-mB)|round(2,'common')}} € </p>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+flask==2.2.2
+SQLAlchemy==1.4.44
+Flask-SQLAlchemy==3.0.2
+openpyxl==3.0.10
+pandas==1.5.1
