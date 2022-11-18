@@ -13,11 +13,11 @@ Software per il controllo degli scostamenti in un budget.
 ```sh
 gh repo clone andrearoota/sistemiDiControlloDiGestione
 ```
-6. Spostati all'interno della directory appena creata
+5. Spostati all'interno della directory appena creata
 ```sh
 cd sistemiDiControlloDiGestione
 ```
-7. Installa le dipendenze
+6. Installa le dipendenze
 ```sh
 pip install -r requirements.txt
 ```
