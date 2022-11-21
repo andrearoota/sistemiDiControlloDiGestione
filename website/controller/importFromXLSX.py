@@ -2,12 +2,7 @@ from pandas import pandas
 from website.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
 from website import db
 
-
-
-def importFromXLSX():
-    # TO DO
-    # 1. Inserimento di massa
-    
+def importFromXLSX():    
     # Drop all tables and recreate the schema
     db.drop_all()
     db.create_all()
