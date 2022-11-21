@@ -13,7 +13,7 @@ db = SQLAlchemy()
 def create_app():
 
     # create the app
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates")
 
     # configure the SQLite database, relative to the app instance folder
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
@@ -26,8 +26,8 @@ def create_app():
     #app.secret_key = secret
 
     # register the blueprint
-    from .views import views
-    app.register_blueprint(views, url_prefix='/')
+    from website.route import route
+    app.register_blueprint(route, url_prefix='/')
 
     isDatabaseExist = path.exists('instance/' + DB_NAME)
 
@@ -38,8 +38,8 @@ def create_app():
 
     # Seed database
     if not isDatabaseExist:
-        from website.views import riempi
+        from website.controller.importFromXLSX import importFromXLSX
         with app.app_context():
-            riempi()
+            importFromXLSX()
     
     return app
