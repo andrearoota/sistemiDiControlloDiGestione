@@ -25,6 +25,10 @@ def create_app():
     from website.route import route
     app.register_blueprint(route, url_prefix='/')
 
+    # init secret key
+    secret = secrets.token_urlsafe(32)
+    app.secret_key = secret
+
     # if not exist import data from xlsx
     isDatabaseExist = path.exists('instance/' + DB_NAME)
 
