@@ -137,8 +137,8 @@
         <h4> Dati Aggiuntivi :</h4>
         <p></p>
         <br>
-        <label for="mdcB"> MARGINE DI CONTRIBUZIONE (BUDGET)  </label> <p id ="mdcB"> {% if z == 1 %}{{(puB-(cmpB+clavB))|round(2,'common')}}{% elif z == 0 %}0.00{% endif %}</p>
-        <label for="mdcC"> MARGINE DI CONTRIBUZIONE (CONSUNTIVO)  </label> <p id ="mdcC"> {% if z == 1 %}{{(puC-(cmpC+clavC))|round(2,'common')}}{% elif z == 0 %}0.00{% endif %}</p>
+        <label for="mdcB"> MARGINE DI CONTRIBUZIONE (BUDGET)  </label> <p id ="mdcB"> {% if withArticle == True %}{{(puB-(cmpB+clavB))|round(2,'common')}}{% elif withArticle == False %}0.00{% endif %}</p>
+        <label for="mdcC"> MARGINE DI CONTRIBUZIONE (CONSUNTIVO)  </label> <p id ="mdcC"> {% if withArticle == True %}{{(puC-(cmpC+clavC))|round(2,'common')}}{% elif withArticle == False %}0.00{% endif %}</p>
     </div>
 </div>
 {% endblock %}
