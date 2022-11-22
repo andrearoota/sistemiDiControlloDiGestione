@@ -49,45 +49,55 @@
     </div>
 </section>
 
+<!-- Article section -->
 <section class="pt-3">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <table class="table align-middle mb-0 bg-white">
-                    <thead class="bg-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Lorem</th>
-                            <th>Lorem</th>
-                            <th>Lorem</th>
-                            <th>Dettagli</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for article in articles %}
-                        <tr>
-                            <td>
-                                {{ article.nrArticolo }}
-                            </td>
-                            <td>
-                                Lorem
-                            </td>
-                            <td>
-                                Lorem
-                            </td>
-                            <td>
-                                Lorem
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="buildModalArticle('{{ article.nrArticolo }}')"><i
-                                        class="fas fa-arrow-right"></i></button>
-                            </td>
-                        </tr>
-                        {% endfor %}
+        <div class="row row-cols-1">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Articoli analizzati</h5>
+                        <!-- Article table -->
+                        <div class="overflow-auto" style="max-height: 50vmax;">
+                            <table class="table align-middle mb-0 bg-white">
+                                <thead class="bg-light sticky-top">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Lorem</th>
+                                        <th>Lorem</th>
+                                        <th>Lorem</th>
+                                        <th>Dettagli</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for article in articles %}
+                                    <tr>
+                                        <td>
+                                            {{ article.nrArticolo }}
+                                        </td>
+                                        <td>
+                                            Lorem
+                                        </td>
+                                        <td>
+                                            Lorem
+                                        </td>
+                                        <td>
+                                            Lorem
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="buildModalArticle('{{ article.nrArticolo }}')"><i
+                                                    class="fas fa-arrow-right"></i></button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
 
-                    </tbody>
-                </table>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
