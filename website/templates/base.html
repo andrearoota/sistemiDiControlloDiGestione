@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="it-IT">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width-device-width, initial-scale = 1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -11,8 +11,8 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" />
 
-    <!---- Blocco che cambierà dinamicamente --->
-    <title> {% block title %} Home {% endblock %} </title>
+    <!-- Blocco che cambierà dinamicamente -->
+    <title>{% block title %} Home {% endblock %}</title>
 </head>
 
 <body>
@@ -43,33 +43,8 @@
         </div>
     </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    {% if category == 'error' %}
-    <div class="alert alert-danger alert-dismissable fade show" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert">
-            <!--- span, inserisco icona.... &times; sarebbe la x per chiudere una finestra --->
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% else %}
-    <div class="alert alert-success alert-dismissable fade show" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert">
-            <!--- span, inserisco icona.... &times; sarebbe la x per chiudere una finestra --->
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
 
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
