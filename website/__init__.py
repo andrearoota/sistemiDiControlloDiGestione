@@ -21,25 +21,21 @@ def create_app():
     # initialize the app with the extension
     db.init_app(app)
 
-    # creo chiave segreta
-    #secret = secrets.token_urlsafe(32)
-    #app.secret_key = secret
-
     # register the blueprint
     from website.route import route
     app.register_blueprint(route, url_prefix='/')
 
+    # if not exist import data from xlsx
     isDatabaseExist = path.exists('instance/' + DB_NAME)
 
+    # create database
     with app.app_context():
         db.create_all()
         db.session.commit()
-        print('Created Database')
 
-    # Seed database
-    if not isDatabaseExist:
-        from website.controller.importFromXLSX import importFromXLSX
-        with app.app_context():
-            importFromXLSX()
+        # seed database if not exist
+        if not isDatabaseExist:
+            from website.controller.importFromXLSX import importFromXLSX
+            importFromXLSX()            
     
     return app
