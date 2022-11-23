@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 import pandas as pandas
 from website import db
 from website.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
+from website.controller.importFromXLSX import importFromXLSX
 
 route = Blueprint('routing', __name__)
 
@@ -33,6 +34,10 @@ def home():
 def chiSiamo():
     return render_template("chiSiamo.html")
 
+@route.route('/uploadData')
+def renderUploadDataPage():
+    return render_template("uploadData.html")
+
 @route.route("/analysesVariances")
 def analysesVariances():
     from website.controller.analysesVariances import calcAnalysesVariances
@@ -40,8 +45,26 @@ def analysesVariances():
 
 @route.route('/database/import')
 def databaseImport():
-    from website.controller.importFromXLSX import importFromXLSX
     return importFromXLSX()
+
+@route.route('/file/upload', methods = ['POST'])
+def fileUpload():
+    # delete old file
+    import shutil
+    shutil.rmtree('inputXLSX/', False)
+    import os
+    os.mkdir('inputXLSX/')
+
+    # unzip and save into inputXLSX/
+    file = request.files['file']
+    import zipfile
+    with zipfile.ZipFile(file, 'r') as zip_ref:
+        zip_ref.extractall('inputXLSX/')
+    
+    # Import file into database
+    importFromXLSX()
+
+    return {"error": None}
 
 @route.route('/article/<idArticle>',  methods = ['GET'])
 def viewArticle(idArticle):

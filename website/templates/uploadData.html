@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %} Carica i nuovi dati
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row-cols-1">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Carica i file</h5>
+                    <i>Carica un file .zip con all'interno i file necessari</i>
+                    <form id="uploadFile" method="post" action="/file/upload" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="form-label" for="zipFile">Seleziona archivio</label>
+                                <input type="file" class="form-control" name="file" accept="application/zip" />
+                                <button type="submit" class="btn btn-primary" id="btnSubmit">Carica</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('uploadFile');
+    const button = document.getElementById('btnSubmit');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        button.disabled = true;
+        var formData = new FormData(form);
+
+        const response = await fetch(
+            `${window.location.origin}/file/upload`,
+            {
+                method: 'POST',
+                body: formData
+            }
+        )
+            .then((e) => e.json());
+
+        button.disabled = false;
+
+        if (response.error === null) {
+            button.innerHTML = 'Caricamento completato';
+        } else {
+            button.innerHTML = '<span class="text-danger">Errore</span>';
+        }
+
+        setTimeout(function () {
+            button.innerHTML = 'Carica';
+        }, 2000);
+
+    })
+</script>
+{% endblock %}
