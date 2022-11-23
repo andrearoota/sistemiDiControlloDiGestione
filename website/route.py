@@ -30,7 +30,7 @@ def home():
     from website.controller.article import selectAllArticles
     return render_template("dashboard.html", articles = selectAllArticles())
 
-@route.route('/chiSiamo')
+@route.route('/chi-siamo')
 def chiSiamo():
     return render_template("chiSiamo.html")
 

@@ -3,7 +3,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid text-center">
     <div class="row-cols-1">
         <div class="col">
             <div class="card">
@@ -11,10 +11,12 @@
                     <h5 class="card-title">Carica i file</h5>
                     <i>Carica un file .zip con all'interno i file necessari</i>
                     <form id="uploadFile" method="post" action="/file/upload" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-xl-3">
+                        <div class="row pb-2">
+                            <div class="col-12 col-md-6 col-xl-4 mx-auto">
                                 <label class="form-label" for="zipFile">Seleziona archivio</label>
-                                <input type="file" class="form-control" name="file" accept="application/zip" />
+                                <input type="file" class="form-control" name="file" accept="application/zip" required/>
+                            </div>
+                            <div class="col-12 pt-2">
                                 <button type="submit" class="btn btn-primary" id="btnSubmit">Carica</button>
                             </div>
                         </div>
