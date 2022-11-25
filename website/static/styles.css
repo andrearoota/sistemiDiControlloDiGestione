@@ -3,6 +3,10 @@ body {
     background-color: #fbfbfb;
 }
 
+main {
+    padding-top: 100px;
+}
+
 @media (min-width: 991.98px) {
     main {
         padding-left: 240px;
