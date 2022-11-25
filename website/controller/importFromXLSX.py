@@ -10,12 +10,12 @@ def importFromXLSX():
 
     # Insert Cliente
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/clienti.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/clienti.xlsx')
     records = []
     for i in range(len(df)):
         codiceCliente = df.iloc[i, 0]
-        fattureCumulative = df.iloc[i, 1]
-        valutaCliente = int(df.iloc[i, 2])
+        fattureCumulative = df.iloc[i, 2]
+        valutaCliente = int(df.iloc[i, 3])
         records.append(Cliente(codiceCliente=codiceCliente, fattureCumulative=fattureCumulative,
                                 valutaCliente=valutaCliente))
         
@@ -24,7 +24,7 @@ def importFromXLSX():
 
     # Insert Valuta
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/tassiDiCambio.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/tassi Di Cambio.xlsx')
     records = []
     for i in range(len(df)):
         codValuta = int(df.iloc[i, 0])
@@ -39,15 +39,15 @@ def importFromXLSX():
 
     # Insert Vendita
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/Vendite.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/Vendite.xlsx')
     records = []
     for i in range(len(df)):
         nrMovimentoV = int(df.iloc[i, 0])
         tipo = df.iloc[i, 1]
-        nrArticolo = df.iloc[i, 2]
-        nrOrigine = df.iloc[i, 3]
-        qta = int(df.iloc[i, 4])
-        importoVenditeVL = str(df.iloc[i, 5])
+        nrArticolo = df.iloc[i, 3]
+        nrOrigine = df.iloc[i, 5]
+        qta = int(df.iloc[i, 6])
+        importoVenditeVL = str(df.iloc[i, 7])
         importoVenditeVL = importoVenditeVL.replace(",",".")
         importoVenditeVL = float(importoVenditeVL)
         records.append(Vendita(nrMovimentoV=nrMovimentoV, tipo=tipo, nrArticolo=nrArticolo,
@@ -59,16 +59,16 @@ def importFromXLSX():
 
     # Insert Consumo
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/Consumi.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/Consumi.xlsx')
     records = []
     for i in range(len(df)):
         nrMovimentoC = int(df.iloc[i, 0])
         tipo = df.iloc[i, 1]
-        codiceMP = df.iloc[i, 2]
-        nrArticolo = df.iloc[i, 3]
-        nrDocumentoODP = df.iloc[i, 4]
-        qta = int(df.iloc[i, 5])
-        importoTotaleC = str(df.iloc[i, 6])
+        codiceMP = df.iloc[i, 3]
+        nrArticolo = df.iloc[i, 5]
+        nrDocumentoODP = df.iloc[i, 6]
+        qta = int(df.iloc[i, 7])
+        importoTotaleC = str(df.iloc[i, 8])
         importoTotaleC = importoTotaleC.replace(",",".")
         importoTotaleC = float(importoTotaleC)
         records.append(Consumo(nrMovimentoC=nrMovimentoC, tipo=tipo, codiceMP=codiceMP, nrArticolo=nrArticolo,
@@ -79,7 +79,7 @@ def importFromXLSX():
 
     # Insert Impiego
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/impiegoOrarioRisorse.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/impiego Orario Risorse.xlsx')
     records = []
     for i in range(len(df)):
         idImpiego = i
@@ -102,7 +102,7 @@ def importFromXLSX():
 
     # Insert Risorse
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/costoOrario.xlsx', index_col=0)
+    df = pandas.read_excel('inputXLSX/costo orario risorse - budget.xlsx')
     records = []
     for i in range(len(df)):
         idRisorsa = i
@@ -111,11 +111,18 @@ def importFromXLSX():
         costoOrarioBudget = str(df.iloc[i, 2])
         costoOrarioBudget = costoOrarioBudget.replace(",", ".")
         costoOrarioBudget = float(costoOrarioBudget)
-        costoOrarioConsuntivo = str(df.iloc[i, 3])
-        costoOrarioConsuntivo = costoOrarioConsuntivo.replace(",", ".")
-        costoOrarioConsuntivo = float(costoOrarioConsuntivo)
-        records.append(Risorsa(idRisorsa=idRisorsa, codRisorsa=codRisorsa, areaProd=areaProd, costoOrarioBudget=costoOrarioBudget,
-                                costoOrarioConsuntivo=costoOrarioConsuntivo))
+        records.append(Risorsa(idRisorsa=idRisorsa, codRisorsa=codRisorsa, areaProd=areaProd, costoOrarioBudget=costoOrarioBudget))
+
+    df = pandas.read_excel('inputXLSX/costo orario risorse - consuntivo.xlsx')
+    for i in range(len(df)):
+        codRisorsa = df.iloc[i, 0]
+        areaProd = df.iloc[i, 1]
+        for j in range(len(records)):
+            if records[i].areaProd == areaProd and records[i].codRisorsa == codRisorsa:
+                costoOrarioConsuntivo = str(df.iloc[i, 2])
+                costoOrarioConsuntivo = costoOrarioConsuntivo.replace(",", ".")
+                records[i].costoOrarioConsuntivo = float(costoOrarioConsuntivo)
+                break
 
     db.session.add_all(records)
     db.session.commit()
