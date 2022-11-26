@@ -28,7 +28,7 @@ def importFromXLSX():
     records = []
     for i in range(len(df)):
         codValuta = int(df.iloc[i, 0])
-        budOCons = df.iloc[i, 1]
+        budOCons = df.iloc[i, 1].upper()
         tassoCambioMedio = str(df.iloc[i, 2])
         tassoCambioMedio = tassoCambioMedio.replace(",",".")
         tassoCambioMedio = float(tassoCambioMedio)
@@ -43,7 +43,7 @@ def importFromXLSX():
     records = []
     for i in range(len(df)):
         nrMovimentoV = int(df.iloc[i, 0])
-        tipo = df.iloc[i, 1]
+        tipo = df.iloc[i, 1].upper()
         nrArticolo = df.iloc[i, 3]
         nrOrigine = df.iloc[i, 5]
         qta = int(df.iloc[i, 6])
@@ -63,7 +63,7 @@ def importFromXLSX():
     records = []
     for i in range(len(df)):
         nrMovimentoC = int(df.iloc[i, 0])
-        tipo = df.iloc[i, 1]
+        tipo = df.iloc[i, 1].upper()
         codiceMP = df.iloc[i, 3]
         nrArticolo = df.iloc[i, 5]
         nrDocumentoODP = df.iloc[i, 6]
@@ -84,7 +84,7 @@ def importFromXLSX():
     for i in range(len(df)):
         idImpiego = i
         nrArticolo = df.iloc[i, 0]
-        tipo = df.iloc[i, 1]
+        tipo = df.iloc[i, 1].upper()
         nrODP = df.iloc[i, 2]
         descrizione = df.iloc[i, 3]
         areaProd = df.iloc[i, 4]
