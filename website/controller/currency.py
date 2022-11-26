@@ -14,6 +14,9 @@ def currencyConversion (initialValue, clientCode, type):
                     convertedValue (float)
     '''
 
-    # Get exchange rate from database 
-    stmt = db.select(Valuta.tassoCambioMedio).select_from(Cliente).join(Valuta, Valuta.codValuta == Cliente.valutaCliente).where(Cliente.codiceCliente == clientCode).where(Valuta.budOCons == type.upper())
+    # SQLite is case-sensitive
+    type = type.upper()
+    
+    # Get exchange rate from database
+    stmt = db.select(Valuta.tassoCambioMedio).select_from(Cliente).join(Valuta, Valuta.codValuta == Cliente.valutaCliente).where(Cliente.codiceCliente == clientCode).where(Valuta.budOCons == type)
     return initialValue / db.session.scalars(stmt).one()
