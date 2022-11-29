@@ -34,14 +34,13 @@ class Impiego(db.Model):
     tipo = db.Column(db.String(10))  # budget o consuntivo
     nrODP = db.Column(db.String(11), db.ForeignKey('consumo.nrDocumentoODP'))
     descrizione = db.Column(db.String(20)) #qua metto il reparto
-    areaProd = db.Column(db.String(3))  #qua metto il codice
+    areaProd = db.Column(db.String(3), db.ForeignKey('risorsa.areaProd'))  #qua metto il codice
     risorsa = db.Column(db.String(5), db.ForeignKey('risorsa.codRisorsa'))
     tempoRisorsa = db.Column(db.Float)
     qtaOutput = db.Column(db.Integer)
 
 class Risorsa(db.Model):
-    idRisorsa = db.Column(db.Integer, primary_key=True)
-    codRisorsa = db.Column(db.String(5))
-    areaProd = db.Column(db.String(3))
+    codRisorsa = db.Column(db.String(5), primary_key=True)
+    areaProd = db.Column(db.String(3), primary_key=True)
     costoOrarioBudget = db.Column(db.Float)
     costoOrarioConsuntivo = db.Column(db.Float)

@@ -27,8 +27,8 @@ listaTotali = []
 
 @route.route("/")
 def home():
-    from website.controller.article import selectAllArticles
-    return render_template("dashboard.html", articles = selectAllArticles())
+    from website.controller.article import selectAllArticlesID
+    return render_template("dashboard.html", articles = selectAllArticlesID())
 
 @route.route('/chi-siamo')
 def chiSiamo():

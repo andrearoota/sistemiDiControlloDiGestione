@@ -2,7 +2,16 @@ from pandas import pandas
 from website.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
 from website import db
 
-def importFromXLSX():    
+def importFromXLSX():
+    '''
+    Import into databases from file XLSX.
+
+        Parameters:
+            None
+        Returns:
+            JSON
+    '''
+
     # Drop all tables and recreate the schema
     db.drop_all()
     db.create_all()
@@ -105,13 +114,12 @@ def importFromXLSX():
     df = pandas.read_excel('inputXLSX/costo orario risorse - budget.xlsx')
     records = []
     for i in range(len(df)):
-        idRisorsa = i
         codRisorsa = df.iloc[i, 0]
         areaProd = df.iloc[i, 1]
         costoOrarioBudget = str(df.iloc[i, 2])
         costoOrarioBudget = costoOrarioBudget.replace(",", ".")
         costoOrarioBudget = float(costoOrarioBudget)
-        records.append(Risorsa(idRisorsa=idRisorsa, codRisorsa=codRisorsa, areaProd=areaProd, costoOrarioBudget=costoOrarioBudget))
+        records.append(Risorsa(codRisorsa=codRisorsa, areaProd=areaProd, costoOrarioBudget=costoOrarioBudget))
 
     df = pandas.read_excel('inputXLSX/costo orario risorse - consuntivo.xlsx')
     for i in range(len(df)):

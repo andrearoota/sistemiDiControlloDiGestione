@@ -5,13 +5,12 @@ def currencyConversion (initialValue, clientCode, type):
     '''
     Returns the converted value with the exchange rate.
 
-            Parameters:
-                    initialValue (float): Value to convert
-                    clientCode (string): id client
-                    type (string): Budget/Consuntivo
-
-            Returns:
-                    convertedValue (float)
+        Parameters:
+			initialValue (float): Value to convert
+			clientCode (string): id client
+			type (string): Budget/Consuntivo
+        Returns:
+            converted value (float)
     '''
 
     # SQLite is case-sensitive
