@@ -13,7 +13,7 @@ db = SQLAlchemy()
 def create_app():
 
     # create the app
-    app = Flask(__name__, template_folder="templates")
+    app = Flask(__name__, template_folder="view")
 
     # configure the SQLite database, relative to the app instance folder
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
