@@ -1,4 +1,4 @@
-from website import db
+from src import db
 
 class Cliente(db.Model):
     codiceCliente = db.Column(db.String(8), primary_key=True)

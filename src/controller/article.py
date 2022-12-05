@@ -1,6 +1,6 @@
-from website import db
-from website.model.model import Vendita, Consumo, Impiego, Risorsa
-from website.controller.currency import currencyConversion
+from src import db
+from src.model.model import Vendita, Consumo, Impiego, Risorsa
+from src.controller.currency import currencyConversion
 from flask import render_template
 from sqlalchemy import and_
 import copy

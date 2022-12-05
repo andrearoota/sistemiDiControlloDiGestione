@@ -22,7 +22,7 @@ def create_app():
     db.init_app(app)
 
     # register the blueprint
-    from website.route import route
+    from src.route import route
     app.register_blueprint(route, url_prefix='/')
 
     # init secret key
@@ -39,7 +39,7 @@ def create_app():
 
         # seed database if not exist
         if not isDatabaseExist:
-            from website.controller.importFromXLSX import importFromXLSX
+            from src.controller.importFromXLSX import importFromXLSX
             importFromXLSX()            
     
     return app

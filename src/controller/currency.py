@@ -1,5 +1,5 @@
-from website.model.model import Cliente, Valuta
-from website import db
+from src.model.model import Cliente, Valuta
+from src import db
 
 def currencyConversion (initialValue, clientCode, type):
     '''

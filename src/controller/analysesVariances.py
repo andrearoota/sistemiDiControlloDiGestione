@@ -1,7 +1,7 @@
-from website import db
-from website.model.model import Vendita, Consumo, Impiego, Risorsa
-from website.controller.currency import currencyConversion
-from website.controller.article import selectAllArticlesID, analysesVariancesRevenueCenterByArticle, analysesVariancesCostCenterByArticle
+from src import db
+from src.model.model import Vendita, Consumo, Impiego, Risorsa
+from src.controller.currency import currencyConversion
+from src.controller.article import selectAllArticlesID, analysesVariancesRevenueCenterByArticle, analysesVariancesCostCenterByArticle
 from flask import render_template
 from sqlalchemy import and_
 import copy

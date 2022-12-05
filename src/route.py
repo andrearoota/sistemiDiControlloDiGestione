@@ -1,9 +1,9 @@
 #in views definiamo le routes
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 import pandas as pandas
-from website import db
-from website.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
-from website.controller.importFromXLSX import importFromXLSX
+from src import db
+from src.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
+from src.controller.importFromXLSX import importFromXLSX
 
 route = Blueprint('routing', __name__)
 
@@ -27,7 +27,7 @@ listaTotali = []
 
 @route.route("/")
 def home():
-    from website.controller.article import selectAllArticlesID
+    from src.controller.article import selectAllArticlesID
     return render_template("dashboard.html", articles = selectAllArticlesID())
 
 @route.route('/chi-siamo')
@@ -40,7 +40,7 @@ def renderUploadDataPage():
 
 @route.route("/analysesVariances")
 def analysesVariances():
-    from website.controller.analysesVariances import calcAnalysesVariances
+    from src.controller.analysesVariances import calcAnalysesVariances
     return calcAnalysesVariances()
 
 @route.route('/database/import')
@@ -68,10 +68,10 @@ def fileUpload():
 
 @route.route('/article/<idArticle>',  methods = ['GET'])
 def viewArticle(idArticle):
-    from website.controller.article import selectArticle
+    from src.controller.article import selectArticle
     return selectArticle(idArticle=idArticle)
 
 @route.route('/article/analisi/<idArticle>',  methods = ['GET'])
 def fanculo(idArticle):
-    from website.controller.article import analysesVariancesCostCenterByArticle
+    from src.controller.article import analysesVariancesCostCenterByArticle
     return analysesVariancesCostCenterByArticle(idArticle=idArticle)

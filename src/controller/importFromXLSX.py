@@ -1,6 +1,6 @@
 from pandas import pandas
-from website.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
-from website import db
+from src.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
+from src import db
 
 __FILES_DIRECTORY__ = "storage/"
 
