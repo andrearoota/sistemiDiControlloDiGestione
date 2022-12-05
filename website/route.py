@@ -51,15 +51,15 @@ def databaseImport():
 def fileUpload():
     # delete old file
     import shutil
-    shutil.rmtree('inputXLSX/', False)
+    shutil.rmtree('storage/', False)
     import os
-    os.mkdir('inputXLSX/')
+    os.mkdir('storage/')
 
-    # unzip and save into inputXLSX/
+    # unzip and save into storage/
     file = request.files['file']
     import zipfile
     with zipfile.ZipFile(file, 'r') as zip_ref:
-        zip_ref.extractall('inputXLSX/')
+        zip_ref.extractall('storage/')
     
     # Import file into database
     importFromXLSX()
@@ -70,3 +70,8 @@ def fileUpload():
 def viewArticle(idArticle):
     from website.controller.article import selectArticle
     return selectArticle(idArticle=idArticle)
+
+@route.route('/article/analisi/<idArticle>',  methods = ['GET'])
+def fanculo(idArticle):
+    from website.controller.article import analysesVariancesCostCenterByArticle
+    return analysesVariancesCostCenterByArticle(idArticle=idArticle)

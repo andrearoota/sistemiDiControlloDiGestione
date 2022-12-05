@@ -2,6 +2,8 @@ from pandas import pandas
 from website.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
 from website import db
 
+__FILES_DIRECTORY__ = "storage/"
+
 def importFromXLSX():
     '''
     Import into databases from file XLSX.
@@ -19,7 +21,7 @@ def importFromXLSX():
 
     # Insert Cliente
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/clienti.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}clienti.xlsx")
     records = []
     for i in range(len(df)):
         codiceCliente = df.iloc[i, 0]
@@ -33,7 +35,7 @@ def importFromXLSX():
 
     # Insert Valuta
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/tassi Di Cambio.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}tassi Di Cambio.xlsx")
     records = []
     for i in range(len(df)):
         codValuta = int(df.iloc[i, 0])
@@ -48,7 +50,7 @@ def importFromXLSX():
 
     # Insert Vendita
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/Vendite.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}Vendite.xlsx")
     records = []
     for i in range(len(df)):
         nrMovimentoV = int(df.iloc[i, 0])
@@ -68,7 +70,7 @@ def importFromXLSX():
 
     # Insert Consumo
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/Consumi.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}Consumi.xlsx")
     records = []
     for i in range(len(df)):
         nrMovimentoC = int(df.iloc[i, 0])
@@ -76,7 +78,10 @@ def importFromXLSX():
         codiceMP = df.iloc[i, 3]
         nrArticolo = df.iloc[i, 5]
         nrDocumentoODP = df.iloc[i, 6]
-        qta = int(df.iloc[i, 7])
+        qta = str(df.iloc[i, 7])
+        qta = qta.replace(",", ".")
+        qta = float(qta)
+
         importoTotaleC = str(df.iloc[i, 8])
         importoTotaleC = importoTotaleC.replace(",",".")
         importoTotaleC = float(importoTotaleC)
@@ -88,7 +93,7 @@ def importFromXLSX():
 
     # Insert Impiego
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/impiego Orario Risorse.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}impiego Orario Risorse.xlsx")
     records = []
     for i in range(len(df)):
         idImpiego = i
@@ -101,7 +106,9 @@ def importFromXLSX():
         tempoRisorsa = str(df.iloc[i, 6])
         tempoRisorsa = tempoRisorsa.replace(",", ".")
         tempoRisorsa = float(tempoRisorsa)
-        qtaOutput = int(df.iloc[i, 7])
+        qtaOutput = str(df.iloc[i, 7])
+        qtaOutput = qtaOutput.replace(",", ".")
+        qtaOutput = float(qtaOutput)
         records.append(Impiego(idImpiego=idImpiego, nrArticolo=nrArticolo, tipo=tipo, nrODP=nrODP, descrizione=descrizione,
                                 areaProd=areaProd, risorsa=risorsa, tempoRisorsa=tempoRisorsa,
                                 qtaOutput=qtaOutput))
@@ -111,7 +118,7 @@ def importFromXLSX():
 
     # Insert Risorse
     # Read from file .xlsx and insert into database
-    df = pandas.read_excel('inputXLSX/costo orario risorse - budget.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}costo orario risorse - budget.xlsx")
     records = []
     for i in range(len(df)):
         codRisorsa = df.iloc[i, 0]
@@ -121,7 +128,7 @@ def importFromXLSX():
         costoOrarioBudget = float(costoOrarioBudget)
         records.append(Risorsa(codRisorsa=codRisorsa, areaProd=areaProd, costoOrarioBudget=costoOrarioBudget))
 
-    df = pandas.read_excel('inputXLSX/costo orario risorse - consuntivo.xlsx')
+    df = pandas.read_excel(f"{__FILES_DIRECTORY__}costo orario risorse - consuntivo.xlsx")
     for i in range(len(df)):
         codRisorsa = df.iloc[i, 0]
         areaProd = df.iloc[i, 1]

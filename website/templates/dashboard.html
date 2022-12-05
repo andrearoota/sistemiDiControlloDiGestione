@@ -113,7 +113,7 @@
         const response = await fetch(`${window.location.origin}/article/${idArticle}`);
         let article = await response.json();
         modalArticle.querySelector('#idArticle').innerHTML = idArticle;
-        modalArticle.querySelector('#importoVendite').innerHTML = article.importoVendite;
+        modalArticle.querySelector('#importoVendite').innerHTML = JSON.stringify(article) ;
 
         let modalObj = new mdb.Modal(modalArticle)
         modalObj.show();
