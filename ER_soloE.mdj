@@ -1,0 +1,1412 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Main",
+					"defaultDiagram": true
+				}
+			]
+		},
+		{
+			"_type": "ERDDataModel",
+			"_id": "AAAAAAGEuwI7toRpUvs=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Data Model1",
+			"ownedElements": [
+				{
+					"_type": "ERDDiagram",
+					"_id": "AAAAAAGEuwI7t4RqQMA=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "RotaCulo",
+					"ownedViews": [
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuwJYGYRw8wg=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuwJYGYRuJCw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuwJYGYRx9QE=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwJYGYRw8wg="
+									},
+									"font": "Arial;13;1",
+									"left": 16,
+									"top": 21,
+									"width": 175.88818359375,
+									"height": 13,
+									"text": "Clienti"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuwJYGoRy3LQ=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwJYGYRw8wg="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuwJYGYRuJCw="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwVxPYR+Id8=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwJYGoRy3LQ="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwVxNIR7Y3U="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 44,
+											"width": 165.88818359375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwWLyISErW8=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwJYGoRy3LQ="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwWLw4SBxg0="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 59,
+											"width": 165.88818359375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwYEX4SKDRY=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwJYGoRy3LQ="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwYEWYSHceA="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 74,
+											"width": 165.88818359375,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwYHOISQ0TU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwJYGoRy3LQ="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwYHNISND1k="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 89,
+											"width": 165.88818359375,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 16,
+									"top": 39,
+									"width": 175.88818359375,
+									"height": 68
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 16,
+							"top": 16,
+							"width": 175.88818359375,
+							"height": 128,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuwJYGYRx9QE="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuwJYGoRy3LQ="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuwcNgISZ8mM=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuwcNgISaszU=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwcNgISZ8mM="
+									},
+									"font": "Arial;13;1",
+									"left": 208,
+									"top": 21,
+									"width": 177,
+									"height": 13,
+									"text": "Consumi"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuwcNgISbtQ4=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwcNgISZ8mM="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuwcNgISXk74="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweLJoSnLKU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuweLHYSkU0E="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 44,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweVoYStqRs=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuweVnYSqJoA="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 59,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweXxISzylU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuweXwISw9/A="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 74,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweZi4S5PY8=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuweZh4S2ng4="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 89,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwebTIS/Ank=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwebSIS8XfY="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 104,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwedAYTFOok=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwec/YTCwIE="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 119,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweexYTLOhI=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuweewYTIa4U="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 134,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuweghITR3xc=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwegfoTOLus="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 149,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwejvYTXWi0=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwcNgISbtQ4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwejuYTUPfU="
+											},
+											"font": "Arial;13;0",
+											"left": 213,
+											"top": 164,
+											"width": 167,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 208,
+									"top": 39,
+									"width": 177,
+									"height": 143
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 208,
+							"top": 16,
+							"width": 177,
+							"height": 177,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuwcNgISaszU="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuwcNgISbtQ4="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuwwSm4Tk9fg=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuwwSm4TiI2g="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuwwSm4Tlvew=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwwSm4Tk9fg="
+									},
+									"font": "Arial;13;1",
+									"left": 16,
+									"top": 229,
+									"width": 193,
+									"height": 13,
+									"text": "Costo orario risorse - budget"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuwwSm4TmTrs=",
+									"_parent": {
+										"$ref": "AAAAAAGEuwwSm4Tk9fg="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuwwSm4TiI2g="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwxWtITzAOw=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwwSm4TmTrs="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwxWqITwFqc="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 252,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwx0/4T5boQ=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwwSm4TmTrs="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwx094T29Fc="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 267,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuwx3toT/Cl0=",
+											"_parent": {
+												"$ref": "AAAAAAGEuwwSm4TmTrs="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuwx3sYT8bO0="
+											},
+											"font": "Arial;13;0",
+											"left": 21,
+											"top": 282,
+											"width": 183,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 16,
+									"top": 247,
+									"width": 193,
+									"height": 53
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 16,
+							"top": 224,
+							"width": 193,
+							"height": 160,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuwwSm4Tlvew="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuwwSm4TmTrs="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuw7Pz4UIkGs=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuw7Pz4UGQCo="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuw7Pz4UJ9OM=",
+									"_parent": {
+										"$ref": "AAAAAAGEuw7Pz4UIkGs="
+									},
+									"font": "Arial;13;1",
+									"left": 224,
+									"top": 229,
+									"width": 225,
+									"height": 13,
+									"text": "Costo orario risorse - consuntivo"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuw7Pz4UKhS8=",
+									"_parent": {
+										"$ref": "AAAAAAGEuw7Pz4UIkGs="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuw7Pz4UGQCo="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuw8Ph4UX2A0=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw7Pz4UKhS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuw8Pe4UUfaA="
+											},
+											"font": "Arial;13;0",
+											"left": 229,
+											"top": 252,
+											"width": 215,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuw8uKYUepYk=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw7Pz4UKhS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuw8uIoUbTQE="
+											},
+											"font": "Arial;13;0",
+											"left": 229,
+											"top": 267,
+											"width": 215,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuw9T/4UldUg=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw7Pz4UKhS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuw9T+IUinrs="
+											},
+											"font": "Arial;13;0",
+											"left": 229,
+											"top": 282,
+											"width": 215,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 224,
+									"top": 247,
+									"width": 225,
+									"height": 53
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 224,
+							"top": 224,
+							"width": 225,
+							"height": 160,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuw7Pz4UJ9OM="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuw7Pz4UKhS8="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuw+fc4UrUIs=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuw+fc4Ussx4=",
+									"_parent": {
+										"$ref": "AAAAAAGEuw+fc4UrUIs="
+									},
+									"font": "Arial;13;1",
+									"left": 400,
+									"top": 21,
+									"width": 193,
+									"height": 13,
+									"text": "Impiego orario risorse"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuw+fc4UtaH4=",
+									"_parent": {
+										"$ref": "AAAAAAGEuw+fc4UrUIs="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuw+fc4Up0rI="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxQtCoU9XQI=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxQs/oU6l+w="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 44,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRNaoVEDwM=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRNZIVBZsQ="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 59,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRSPoVKhhY=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRSOIVHZNc="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 74,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRVAYVQ5FU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRU+oVN2Hw="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 89,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRWxoVW+zw=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRWwIVTUkU="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 104,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRYO4Vcr2I=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRYNYVZ8Bw="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 119,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRaE4VibXY=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRaDYVfokA="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 134,
+											"width": 183,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxRbtIVoffU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuw+fc4UtaH4="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxRbr4Vl3VA="
+											},
+											"font": "Arial;13;0",
+											"left": 405,
+											"top": 149,
+											"width": 183,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 400,
+									"top": 39,
+									"width": 193,
+									"height": 128
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 400,
+							"top": 16,
+							"width": 193,
+							"height": 161,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuw+fc4Ussx4="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuw+fc4UtaH4="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEuxsCD4V4J7A=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEuxsCD4V5QyM=",
+									"_parent": {
+										"$ref": "AAAAAAGEuxsCD4V4J7A="
+									},
+									"font": "Arial;13;1",
+									"left": 464,
+									"top": 229,
+									"width": 338.4326171875,
+									"height": 13,
+									"text": "Vendite"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEuxsCD4V6ufI=",
+									"_parent": {
+										"$ref": "AAAAAAGEuxsCD4V4J7A="
+									},
+									"model": {
+										"$ref": "AAAAAAGEuxsCD4V2DX4="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxs1A4WG/kU=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxs0+IWDpdo="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 252,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxu7SIWMxWc=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxu7Q4WJLxM="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 267,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxu+YIWS8sc=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxu+W4WP3vU="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 282,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxvAL4WY4vI=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxvAKYWVnvI="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 297,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxvCC4WeXZs=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxvCBoWbIHY="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 312,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxvD5YWkoO0=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxvD4IWhYKY="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 327,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxvF44Wq24I=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxvF3YWn9aA="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 342,
+											"width": 328.4326171875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEuxvIDYWw47s=",
+											"_parent": {
+												"$ref": "AAAAAAGEuxsCD4V6ufI="
+											},
+											"model": {
+												"$ref": "AAAAAAGEuxvICIWtUO8="
+											},
+											"font": "Arial;13;0",
+											"left": 469,
+											"top": 357,
+											"width": 328.4326171875,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 464,
+									"top": 247,
+									"width": 338.4326171875,
+									"height": 128
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 464,
+							"top": 224,
+							"width": 338.4326171875,
+							"height": 161,
+							"nameLabel": {
+								"$ref": "AAAAAAGEuxsCD4V5QyM="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEuxsCD4V6ufI="
+							}
+						},
+						{
+							"_type": "ERDEntityView",
+							"_id": "AAAAAAGEux3GXoXEDd0=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"model": {
+								"$ref": "AAAAAAGEux3GXoXCw3c="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAGEux3GXoXFFR8=",
+									"_parent": {
+										"$ref": "AAAAAAGEux3GXoXEDd0="
+									},
+									"font": "Arial;13;1",
+									"left": 608,
+									"top": 21,
+									"width": 177,
+									"height": 13,
+									"text": "Tassi di cambio"
+								},
+								{
+									"_type": "ERDColumnCompartmentView",
+									"_id": "AAAAAAGEux3GXoXGANw=",
+									"_parent": {
+										"$ref": "AAAAAAGEux3GXoXEDd0="
+									},
+									"model": {
+										"$ref": "AAAAAAGEux3GXoXCw3c="
+									},
+									"subViews": [
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEux3zZoXSI4Y=",
+											"_parent": {
+												"$ref": "AAAAAAGEux3GXoXGANw="
+											},
+											"model": {
+												"$ref": "AAAAAAGEux3zWYXPBio="
+											},
+											"font": "Arial;13;0",
+											"left": 613,
+											"top": 44,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEux4+Y4XbxxY=",
+											"_parent": {
+												"$ref": "AAAAAAGEux3GXoXGANw="
+											},
+											"model": {
+												"$ref": "AAAAAAGEux4+V4XY50I="
+											},
+											"font": "Arial;13;0",
+											"left": 613,
+											"top": 59,
+											"width": 167,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
+											"_id": "AAAAAAGEux5Ap4Xhrfs=",
+											"_parent": {
+												"$ref": "AAAAAAGEux3GXoXGANw="
+											},
+											"model": {
+												"$ref": "AAAAAAGEux5AooXeDfI="
+											},
+											"font": "Arial;13;0",
+											"left": 613,
+											"top": 74,
+											"width": 167,
+											"height": 13
+										}
+									],
+									"font": "Arial;13;0",
+									"left": 608,
+									"top": 39,
+									"width": 177,
+									"height": 53
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 608,
+							"top": 16,
+							"width": 177,
+							"height": 160,
+							"nameLabel": {
+								"$ref": "AAAAAAGEux3GXoXFFR8="
+							},
+							"columnCompartment": {
+								"$ref": "AAAAAAGEux3GXoXGANw="
+							}
+						},
+						{
+							"_type": "UMLTextView",
+							"_id": "AAAAAAGEuzDwf4Xn2ZE=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwI7t4RqQMA="
+							},
+							"font": "Arial;13;0",
+							"left": 16,
+							"top": 464,
+							"width": 929,
+							"height": 129,
+							"text": "Clienti (Nr, Cod. condizioni pagam., Fatt. cumulative, Valuta)\n\nConsumi (Nr. movimento, Budget/cons, Tipo movimento, Codice MP, Tipo origine, Nr articolo, Nr. documento, Quantità MP impiegata, Importo costo (TOTALE))\n\nImpiego orario risorse (nr articolo, budget/consuntivo, Nr. Ordine di produzione, Descrizione, Nr. Area di produzione, Risorsa, Tempo risorsa, Quantità di output)\n\nTassi di cambio (Codice valuta, Anno, Tasso di cambio medio)\n\nCosto orario risorse - budget (Risorsa, Area di produzione, Costo orario (€/h))\n\nCosto orario risorse - consuntivo (Risorsa, Area di produzione, Costo orario (€/h))\n\nVendite (Nr. movimento, budget/cons, Tipo movimento, Nr, articolo, Tipo origine, Nr. origine, Quantità, Importo vendita in valuta locale (TOTALE VENDITA))"
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuwJYGYRuJCw=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Clienti",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwVxNIR7Y3U=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwJYGYRuJCw="
+							},
+							"name": "Nr",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwWLw4SBxg0=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwJYGYRuJCw="
+							},
+							"name": "Cod. condizioni pagam.",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwYEWYSHceA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwJYGYRuJCw="
+							},
+							"name": "Fatt. cumulative",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwYHNISND1k=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwJYGYRuJCw="
+							},
+							"name": "Valuta",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuwcNgISXk74=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Consumi",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuweLHYSkU0E=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Nr. movimento",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuweVnYSqJoA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Budget e cons",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuweXwISw9/A=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Tipo movimento",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuweZh4S2ng4=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Codice MP",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwebSIS8XfY=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Tipo origine",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwec/YTCwIE=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Nr articolo",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuweewYTIa4U=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Nr. documento",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwegfoTOLus=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Quantità MP impiegata",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwejuYTUPfU=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwcNgISXk74="
+							},
+							"name": "Importo costo TOTALE",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuwwSm4TiI2g=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Costo orario risorse - budget",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwxWqITwFqc=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwwSm4TiI2g="
+							},
+							"name": "Risorsa",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwx094T29Fc=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwwSm4TiI2g="
+							},
+							"name": "Area di produzione",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuwx3sYT8bO0=",
+							"_parent": {
+								"$ref": "AAAAAAGEuwwSm4TiI2g="
+							},
+							"name": "Costo orario in € su h",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuw7Pz4UGQCo=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Costo orario risorse - consuntivo",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuw8Pe4UUfaA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw7Pz4UGQCo="
+							},
+							"name": "Risorsa",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuw8uIoUbTQE=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw7Pz4UGQCo="
+							},
+							"name": "Area di produzione",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuw9T+IUinrs=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw7Pz4UGQCo="
+							},
+							"name": "Costo orario in € su h",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuw+fc4Up0rI=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Impiego orario risorse",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxQs/oU6l+w=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "nr articolo",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRNZIVBZsQ=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "budget e consuntivo",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRSOIVHZNc=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Nr. Ordine di produzione",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRU+oVN2Hw=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Descrizione",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRWwIVTUkU=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Nr. Area di produzione",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRYNYVZ8Bw=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Risorsa",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRaDYVfokA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Tempo risorsa",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxRbr4Vl3VA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuw+fc4Up0rI="
+							},
+							"name": "Quantità di output",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEuxsCD4V2DX4=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Vendite",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxs0+IWDpdo=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Nr. movimento",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxu7Q4WJLxM=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "budget e cons",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxu+W4WP3vU=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Tipo movimento",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxvAKYWVnvI=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Nr articolo",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxvCBoWbIHY=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Tipo origine",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxvD4IWhYKY=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Nr. origine",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxvF3YWn9aA=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Quantità",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEuxvICIWtUO8=",
+							"_parent": {
+								"$ref": "AAAAAAGEuxsCD4V2DX4="
+							},
+							"name": "Importo vendita in valuta locale TOTALE VENDITA",
+							"length": 0
+						}
+					]
+				},
+				{
+					"_type": "ERDEntity",
+					"_id": "AAAAAAGEux3GXoXCw3c=",
+					"_parent": {
+						"$ref": "AAAAAAGEuwI7toRpUvs="
+					},
+					"name": "Tassi di cambio",
+					"columns": [
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEux3zWYXPBio=",
+							"_parent": {
+								"$ref": "AAAAAAGEux3GXoXCw3c="
+							},
+							"name": "Codice valuta",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEux4+V4XY50I=",
+							"_parent": {
+								"$ref": "AAAAAAGEux3GXoXCw3c="
+							},
+							"name": "Anno",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGEux5AooXeDfI=",
+							"_parent": {
+								"$ref": "AAAAAAGEux3GXoXCw3c="
+							},
+							"name": "Tasso di cambio medio",
+							"length": 0
+						}
+					]
+				}
+			]
+		}
+	]
+}
