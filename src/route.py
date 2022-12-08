@@ -4,26 +4,9 @@ import pandas as pandas
 from src import db
 from src.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
 from src.controller.importFromXLSX import importFromXLSX
+import ast
 
 route = Blueprint('routing', __name__)
-
-#li definisco all'avvio gli array da riempire in modo tale da poterli riusare in diverse parti del sito
-listaPrezziBudget = []
-listaQuantitaBudget = []
-mixBudget = []
-listaPrezziCons = []
-listaQuantitaCons = []
-mixCons = []
-listaQuantitaMixStd = []
-mixMixEffettivo = []
-listaCostiUnitariMPBudget = []
-listaCostiUnitariLAVBudget = []
-listaCostiUnitariBudget = []
-listaCostiUnitariMPCons = []
-listaCostiUnitariLAVCons = []
-listaCostiUnitariCons = []
-# 0: qtaB, 4: rB, 8:cB , 12: mB -- max 15
-listaTotali = []
 
 @route.route("/")
 def home():
@@ -38,10 +21,35 @@ def chiSiamo():
 def renderUploadDataPage():
     return render_template("uploadData.html")
 
-@route.route("/analysesVariances")
-def analysesVariances():
-    from src.controller.analysesVariances import calcAnalysesVariances
-    return calcAnalysesVariances()
+@route.route("/analysisVariances")
+def analysisVariances():
+    from src.controller.analysisVariances import calcanalysisVariances
+    from src.controller.article import selectAllArticlesID
+    return calcanalysisVariances(selectAllArticlesID())
+
+@route.route("/analysisVariances/market")
+def analysisVariancesMarket():
+    from src.controller.analysisVariances import calcanalysisVariances
+    response = {}
+
+    stmt = db.select(Valuta).distinct().where(Valuta.budOCons == "BUDGET")
+    for market in db.session.execute(stmt): # Calcoli per ogni market
+
+        # Faccio analisi scostamenti per mercato (Market)
+        response[market.Valuta.codValuta] = ast.literal_eval(market.Valuta.analysisVariances)
+        
+        # Trovo i clienti che hanno acquistato in un mercato
+        response[market.Valuta.codValuta]["client"] = []
+        stmt = (
+            db.select(Cliente)
+            .where(Cliente.valutaCliente == market.Valuta.codValuta)
+        )
+
+        # Per ogni cliente faccio analisi scostamenti (Market > Client)
+        for client in db.session.execute(stmt):            
+            response[market.Valuta.codValuta]["client"].append(ast.literal_eval(client.Cliente.analysisVariances))
+
+    return response
 
 @route.route('/database/import')
 def databaseImport():
@@ -70,8 +78,3 @@ def fileUpload():
 def viewArticle(idArticle):
     from src.controller.article import selectArticle
     return selectArticle(idArticle=idArticle)
-
-@route.route('/article/analisi/<idArticle>',  methods = ['GET'])
-def fanculo(idArticle):
-    from src.controller.article import analysesVariancesCostCenterByArticle
-    return analysesVariancesCostCenterByArticle(idArticle=idArticle)

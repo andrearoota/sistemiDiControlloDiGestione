@@ -5,16 +5,18 @@ class Cliente(db.Model):
     fattureCumulative = db.Column(db.String(6))
     valutaCliente = db.Column(db.Integer, db.ForeignKey('valuta.codValuta'))
     vendite = db.relationship('Vendita')
+    analysisVariances = db.Column(db.Text())
 
 class Valuta(db.Model):
     codValuta = db.Column(db.Integer, primary_key=True)
     budOCons = db.Column(db.String(10), primary_key=True) #budget o consuntivo
     tassoCambioMedio = db.Column(db.Float)
+    analysisVariances = db.Column(db.Text())
 
 class Vendita(db.Model):
     nrMovimentoV = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(10),db.ForeignKey('valuta.budOCons'))  # budget o consuntivo
-    nrArticolo = db.Column(db.String(11))
+    nrArticolo = db.Column(db.String(11), db.ForeignKey('article.nrArticolo'))
     nrOrigine = db.Column(db.String(8), db.ForeignKey('cliente.codiceCliente'))
     qta = db.Column(db.Integer)
     importoVenditeVL = db.Column(db.Float)  #importo totale delle vendite in valuta locale
@@ -23,14 +25,14 @@ class Consumo(db.Model):
     nrMovimentoC = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(10))  # budget o consuntivo
     codiceMP = db.Column(db.String(10))
-    nrArticolo = db.Column(db.String(10), db.ForeignKey('vendita.nrArticolo'))
+    nrArticolo = db.Column(db.String(10), db.ForeignKey('article.nrArticolo'))
     nrDocumentoODP = db.Column(db.String(11))
     qtaC = db.Column(db.Integer)
     importoTotaleC = db.Column(db.Float)
 
 class Impiego(db.Model):
     idImpiego = db.Column(db.Integer, primary_key=True)
-    nrArticolo = db.Column(db.String(10))
+    nrArticolo = db.Column(db.String(10), db.ForeignKey('article.nrArticolo'))
     tipo = db.Column(db.String(10))  # budget o consuntivo
     nrODP = db.Column(db.String(11), db.ForeignKey('consumo.nrDocumentoODP'))
     descrizione = db.Column(db.String(20)) #qua metto il reparto
@@ -44,3 +46,8 @@ class Risorsa(db.Model):
     areaProd = db.Column(db.String(3), primary_key=True)
     costoOrarioBudget = db.Column(db.Float)
     costoOrarioConsuntivo = db.Column(db.Float)
+
+class Article(db.Model):
+    nrArticolo = db.Column(db.String(11), primary_key=True)
+    analysisVariancesCostCenter = db.Column(db.Text())
+    analysisVariancesRevenueCenter = db.Column(db.Text())

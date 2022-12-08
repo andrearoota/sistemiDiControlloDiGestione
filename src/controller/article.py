@@ -1,9 +1,11 @@
 from src import db
-from src.model.model import Vendita, Consumo, Impiego, Risorsa
+from src.model.model import Vendita, Consumo, Impiego, Risorsa, Article, Cliente
 from src.controller.currency import currencyConversion
+from src.controller.sale import countSales
 from flask import render_template
 from sqlalchemy import and_
 import copy
+import ast
 
 
 __BUDGET_CONSUNTIVO__ = ["BUDGET", "CONSUNTIVO"]
@@ -25,13 +27,14 @@ def selectAllArticlesID():
 
     return db.session.execute(stmt)
 
-def analysesVariancesRevenueCenterByArticle(idArticle, totalSalesQuantity):
+
+def analysisVariancesRevenueCenterByArticle(idArticle, totalSalesQuantity, market = None, client = None):
     '''
     Get the analyses variances revenue center of article.
     
         Parameters:
             idArticle (string): di article to search
-            totalSalesQuantity (dict): {BUDGET: (float), CONSUNTIVO: (int)} 
+            totalSalesQuantity (dict): {BUDGET: (int), CONSUNTIVO: (int)} 
         Returns:
             (dict): {
                 BUDGET: {unitPrice: (float),quantity: (float), percentageOutput: (float)},
@@ -53,49 +56,59 @@ def analysesVariancesRevenueCenterByArticle(idArticle, totalSalesQuantity):
         "percentageOutput": 0
     }
 
-    analysesVariancesRevenueCenter = {
+    analysisVariancesRevenueCenter = {
         "BUDGET": copy.deepcopy(revenueCenter),
         "mixStandard": copy.deepcopy(revenueCenter),
         "mixEffettivo": copy.deepcopy(revenueCenter),
         "CONSUNTIVO": copy.deepcopy(revenueCenter)
     }
 
+    # Definizione condizioni aggiuntive
+    additionalCondition = []
+    if market != None:
+        additionalCondition.append(Cliente.valutaCliente == market)
+    if client != None:
+        additionalCondition.append(Cliente.codiceCliente == client)
+
     for type in __BUDGET_CONSUNTIVO__:
         stmt = (
             db.select(Vendita)
+            .join(Cliente)
             .where(Vendita.nrArticolo == idArticle)
             .where(Vendita.tipo == type)
+            .filter(and_(*additionalCondition))
         )
 
         for sale in db.session.execute(stmt).scalars():
-            analysesVariancesRevenueCenter[type]["unitPrice"] += currencyConversion(sale.importoVenditeVL, sale.nrOrigine, type)
-            analysesVariancesRevenueCenter[type]["quantity"] += sale.qta
+            analysisVariancesRevenueCenter[type]["unitPrice"] += currencyConversion(sale.importoVenditeVL, sale.nrOrigine, type)
+            analysisVariancesRevenueCenter[type]["quantity"] += sale.qta
 
         # Prevent ZeroDivisionError: division by zero
-        if analysesVariancesRevenueCenter[type]["quantity"] != 0:
-            analysesVariancesRevenueCenter[type]["unitPrice"] /= analysesVariancesRevenueCenter[type]["quantity"] # Unit price
-            analysesVariancesRevenueCenter[type]["percentageOutput"] = analysesVariancesRevenueCenter[type]["quantity"] / totalSalesQuantity[type] # Percentage output
+        if analysisVariancesRevenueCenter[type]["quantity"] != 0:
+            analysisVariancesRevenueCenter[type]["unitPrice"] /= analysisVariancesRevenueCenter[type]["quantity"] # Unit price
+            analysisVariancesRevenueCenter[type]["percentageOutput"] = analysisVariancesRevenueCenter[type]["quantity"] / totalSalesQuantity[type] # Percentage output
 
-        analysesVariancesRevenueCenter[type]["quantity"] = totalSalesQuantity[type] # Total sales volume
+        analysisVariancesRevenueCenter[type]["quantity"] = totalSalesQuantity[type] # Total sales volume
 
-    analysesVariancesRevenueCenter["mixStandard"]["percentageOutput"] = analysesVariancesRevenueCenter["BUDGET"]["percentageOutput"]
-    analysesVariancesRevenueCenter["mixStandard"]["unitPrice"] = analysesVariancesRevenueCenter["BUDGET"]["unitPrice"]
-    analysesVariancesRevenueCenter["mixEffettivo"]["unitPrice"] = analysesVariancesRevenueCenter["BUDGET"]["unitPrice"]
+    # Mix data to calculate mix standard and mix effettivo 
+    analysisVariancesRevenueCenter["mixStandard"]["unitPrice"] = analysisVariancesRevenueCenter["BUDGET"]["unitPrice"]
+    analysisVariancesRevenueCenter["mixStandard"]["quantity"] = analysisVariancesRevenueCenter["CONSUNTIVO"]["quantity"]
+    analysisVariancesRevenueCenter["mixStandard"]["percentageOutput"] = analysisVariancesRevenueCenter["BUDGET"]["percentageOutput"]
+    
+    analysisVariancesRevenueCenter["mixEffettivo"]["unitPrice"] = analysisVariancesRevenueCenter["BUDGET"]["unitPrice"]
+    analysisVariancesRevenueCenter["mixEffettivo"]["quantity"] = analysisVariancesRevenueCenter["CONSUNTIVO"]["quantity"]
+    analysisVariancesRevenueCenter["mixEffettivo"]["percentageOutput"] = analysisVariancesRevenueCenter["CONSUNTIVO"]["percentageOutput"]
 
-    analysesVariancesRevenueCenter["mixStandard"]["quantity"] = analysesVariancesRevenueCenter["CONSUNTIVO"]["quantity"]
-    analysesVariancesRevenueCenter["mixEffettivo"]["quantity"] = analysesVariancesRevenueCenter["CONSUNTIVO"]["quantity"]
-    analysesVariancesRevenueCenter["mixEffettivo"]["percentageOutput"] = analysesVariancesRevenueCenter["CONSUNTIVO"]["percentageOutput"]
-
-    return analysesVariancesRevenueCenter
+    return analysisVariancesRevenueCenter
 
 
-def analysesVariancesCostCenterByArticle(idArticle):
+def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market = None, client = None):
     '''
     Get the analyses variances cost center of article.
     
         Parameters:
             idArticle (string): di article to search
-            totalSalesQuantity (dict): {BUDGET: (float), CONSUNTIVO: (int)} 
+            totalSalesQuantity (dict): {BUDGET: (int), CONSUNTIVO: (int)} 
         Returns:
             (dict): {
                 BUDGET: {unitPrice: (float),quantity: (float), percentageOutput: (float)},
@@ -112,26 +125,31 @@ def analysesVariancesCostCenterByArticle(idArticle):
 
     # Definizione strutture base
     costCenter = {
-        "quantity": 0,
-        "unitCost": [],
+        "totalQuantity": 0,
+        "queryQuantity": 0,
+        "costs": {
+            "costsVariable": 0,
+            "costsRawMaterial": 0
+        },
     }
 
-    unitCost = {
-        "unitUseRawMaterial": 0,
-        "unitCostRawMaterial": 0
+    analysisVariancesCostCenter = {
+        "BUDGET": None,
+        "mixStandard": None,
+        "mixEffettivo": None,
+        "CONSUNTIVO": None
     }
 
-    analysesVariancesCostCenter = {
-        "BUDGET": [],
-        "mixStandard": [],
-        "mixEffettivo": [],
-        "CONSUNTIVO": []
-    }
+    # Definizione condizioni aggiuntive
+    additionalCondition = []
+    if market != None:
+        additionalCondition.append(Cliente.valutaCliente == market)
+    if client != None:
+        additionalCondition.append(Cliente.codiceCliente == client)
+
 
     for type in __BUDGET_CONSUNTIVO__:
-        # Calcolo dei costi medi per prodotto
         tempCostCenter = copy.deepcopy(costCenter)
-
         ### IMPORTANTE ASSUNZIONE ###
         # Considero l'azienda di tipo "Just in time", perciò utilizzo
         # il totale venduto come totale di produzione
@@ -142,58 +160,79 @@ def analysesVariancesCostCenterByArticle(idArticle):
             .where(Vendita.nrArticolo == idArticle)
             .where(Vendita.tipo == type)
         )
-        qtaProduction = db.session.scalars(stmt).one()
-        if qtaProduction != None or qtaProduction == 0:
-            tempCostCenter["quantity"] = qtaProduction
-        else:
-            continue # Inutile calcolare altro, non essendoci stata produzione data la precedente assunzione 
+        tempCostCenter["totalQuantity"] = db.session.scalars(stmt).one()
+        if tempCostCenter["totalQuantity"] == None or tempCostCenter["totalQuantity"] == 0:
+            analysisVariancesCostCenter[type] = tempCostCenter
+            continue # Inutile calcolare altro, non essendoci stata produzione data la precedente assunzione
 
-        # Consumo medio unitario materie prime
-        # Calcolo il consumo medio unitario sommando il totale dei consumi e dividendolo per la quantità prodotta
+        # Calcolo numero prodotti condizionati dai parametri richiesti
         stmt = (
-            db.text("SELECT sum(Consumo.qtaC) as unitUse, sum(Consumo.importoTotaleC) AS unitCost \
-                FROM Consumo \
-                WHERE Consumo.nrArticolo = :article \
-                AND Consumo.tipo = :type \
-                GROUP BY nrDocumentoODP ")
+            db.select(
+                db.func.sum(Vendita.qta).label("sumQta")
+            )
+            .join(Cliente)
+            .where(Vendita.nrArticolo == idArticle)
+            .where(Vendita.tipo == type)
+            .filter(and_(*additionalCondition))
         )
-        tempUnitCost = copy.deepcopy(unitCost)
-        for item in db.session.execute(stmt, {"article": idArticle, "type": type}):
-            tempUnitCost["unitCostRawMaterial"] = item.unitCost / item.unitUse # Forse?
-            tempUnitCost["unitUseRawMaterial"] = 1 # Forse?
-        
-        tempUnitCost["unitCostRawMaterial"] /= tempUnitCost["unitUseRawMaterial"] # Consumo medio
-        tempCostCenter["unitCost"].append(tempUnitCost)
-                        
-        # Costo medio unitario impiego
-        # Sommo il costo dell'impiego di ogni ordine e divido per il totale prodotto
-        countODP = 0
+        qtaProduction = db.session.scalars(stmt).one()
+        if qtaProduction == None or qtaProduction == 0:
+            analysisVariancesCostCenter[type] = tempCostCenter
+            continue # Inutile calcolare altro, non essendoci stata produzione data la precedente assunzione
+
+        tempCostCenter["queryQuantity"] = qtaProduction
+
+        # Consumo materie prime
+        # Calcolo il consumo unitario di materie prime per articolo
         stmt = (
-            db.text("SELECT sum(costoOrarioBudget * Impiego.tempoRisorsa / Impiego.qtaOutput) AS costoOrarioBudget, sum(costoOrarioConsuntivo * Impiego.tempoRisorsa / Impiego.qtaOutput) AS costoOrarioConsuntivo \
+            db.select(
+                db.func.sum(Consumo.importoTotaleC)
+                )
+            .where(Consumo.nrArticolo == idArticle)
+            .where(Consumo.tipo == type)
+        )
+        tempCostCenter["costs"]["costsRawMaterial"] = db.session.scalars(stmt).one() / tempCostCenter["totalQuantity"] # unit costs
+                        
+        # Costi variabili
+        # Calcolo i costi variabili unitari per articolo
+        stmt = (
+            db.text("SELECT SUM(costoOrarioBudget * Impiego.tempoRisorsa) AS costoOrarioBudget, SUM(costoOrarioConsuntivo * Impiego.tempoRisorsa) AS costoOrarioConsuntivo \
                 FROM Impiego \
                 INNER JOIN Risorsa ON Risorsa.codRisorsa = Impiego.risorsa AND Risorsa.areaProd = Impiego.areaProd \
                 WHERE Impiego.nrArticolo = :article \
-                AND Impiego.tipo = :type \
-                AND Impiego.tempoRisorsa != 0 \
-                AND Impiego.qtaOutput != 0 \
-                group by Impiego.nrODP")
+                AND Impiego.tipo = :type")
         )
-        tempUnitCost = copy.deepcopy(unitCost)
-        tempUnitCost["unitUseRawMaterial"] = 1 # Quanto ci metto a produrre un singolo articolo?
-        for item in db.session.execute(stmt, {"article": idArticle, "type": type}):
-            countODP += 1
-            if type == __BUDGET_CONSUNTIVO__[0]:
-                tempUnitCost["unitCostRawMaterial"] += item.costoOrarioBudget
-            else:
-                tempUnitCost["unitCostRawMaterial"] += item.costoOrarioConsuntivo
-        if countODP != 0:
-            tempUnitCost["unitCostRawMaterial"] /= countODP
-            tempCostCenter["unitCost"].append(tempUnitCost)
-
-        analysesVariancesCostCenter[type].append(tempCostCenter)
+        item = db.session.execute(stmt, {"article": idArticle, "type": type}).one()    
+        if type == __BUDGET_CONSUNTIVO__[0]:
+            tempCostCenter["costs"]["costsVariable"] = item.costoOrarioBudget
+        else:
+            tempCostCenter["costs"]["costsVariable"] = item.costoOrarioConsuntivo
 
 
-    return analysesVariancesCostCenter
+        tempCostCenter["costs"]["costsVariable"] /= tempCostCenter["totalQuantity"] # unit costs
+
+        analysisVariancesCostCenter[type] = tempCostCenter
+
+    # Mix data to calculate mix standard and mix effettivo
+    # Mix standard
+    if analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]] != None:
+        tempCostCenter = copy.deepcopy(costCenter)
+        mixVolumeBudget = (analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]]["queryQuantity"] / totalSalesQuantity[__BUDGET_CONSUNTIVO__[0]]) * 100
+        tempCostCenter["queryQuantity"] = mixVolumeBudget / 100 * totalSalesQuantity[__BUDGET_CONSUNTIVO__[1]]
+        tempCostCenter["costs"]["costsRawMaterial"] = analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]]["costs"]["costsRawMaterial"]
+        tempCostCenter["costs"]["costsVariable"] = analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]]["costs"]["costsVariable"]
+        analysisVariancesCostCenter["mixStandard"] = tempCostCenter
+
+    # Mix effettivo
+    if analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[1]] != None:
+        tempCostCenter = copy.deepcopy(costCenter)
+        mixVolumeConsuntivo = (analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[1]]["queryQuantity"] / totalSalesQuantity[__BUDGET_CONSUNTIVO__[1]]) * 100
+        tempCostCenter["queryQuantity"] = mixVolumeConsuntivo / 100 * totalSalesQuantity[__BUDGET_CONSUNTIVO__[1]]
+        tempCostCenter["costs"]["costsRawMaterial"] = analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]]["costs"]["costsRawMaterial"]
+        tempCostCenter["costs"]["costsVariable"] = analysisVariancesCostCenter[__BUDGET_CONSUNTIVO__[0]]["costs"]["costsVariable"]
+        analysisVariancesCostCenter["mixEffettivo"] = tempCostCenter
+
+    return analysisVariancesCostCenter
 
 
 
@@ -203,23 +242,16 @@ def selectArticle(idArticle):
 
         Parameters:
             idArticle (string): di article to search
+            totalSalesQuantity (dict): {BUDGET: (float), CONSUNTIVO: (int)} 
         Returns:
             JSON
     '''
-
-    # Get total for calculate "percentageOutput"
-    totalSalesQuantity = {}
-    for type in __BUDGET_CONSUNTIVO__:
-        stmt = (
-            db.select(db.func.sum(Vendita.qta))
-            .where(Vendita.tipo == type)
-        )
-        totalSalesQuantity[type] = db.session.scalars(stmt).one()
-    
+    stmt = db.select(Article).where(Article.nrArticolo == idArticle)
+    response = db.session.execute(stmt).one() 
 
     return {
         "id": idArticle,
-        "vendite": analysesVariancesRevenueCenterByArticle(idArticle, totalSalesQuantity),
-        "costi": analysesVariancesCostCenterByArticle(idArticle),
+        "vendite": ast.literal_eval(response.Article.analysisVariancesRevenueCenter),
+        "costi": ast.literal_eval(response.Article.analysisVariancesCostCenter),
         #"MOL": MOL
         }

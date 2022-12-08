@@ -1,6 +1,9 @@
 from pandas import pandas
-from src.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta
+from src.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta, Article
+from src.controller.article import selectAllArticlesID, analysisVariancesCostCenterByArticle, analysisVariancesRevenueCenterByArticle, countSales
+from src.controller.analysisVariances import calcanalysisVariances
 from src import db
+import json
 
 __FILES_DIRECTORY__ = "storage/"
 
@@ -141,5 +144,57 @@ def importFromXLSX():
 
     db.session.add_all(records)
     db.session.commit()
+
+    # Insert Article and calc analysis variances
+    # Get total for calculate "percentageOutput"
+    totalSalesQuantity = countSales()
+    records = []
+    for article in selectAllArticlesID():
+
+        records.append(Article(
+            nrArticolo = article.nrArticolo,
+            analysisVariancesCostCenter = json.dumps(analysisVariancesCostCenterByArticle(article.nrArticolo, totalSalesQuantity)).replace('null', 'None'),
+            analysisVariancesRevenueCenter = json.dumps(analysisVariancesRevenueCenterByArticle(article.nrArticolo, totalSalesQuantity)).replace('null', 'None'),
+        ))
+
+    db.session.add_all(records)
+    db.session.commit()
+
+    # Calc analysis variances by market
+    # Per ogni market faccio analisi scostamenti (Market)
+    stmt = db.select(Valuta).distinct()
+    for market in db.session.execute(stmt): # Calcoli per ogni market
+        # Trovo gli articoli venduti in un mercato
+        stmt = (
+            db.select(Vendita.nrArticolo.label("nrArticolo")).distinct()
+            .select_from(Vendita)
+            .join(Cliente, Vendita.nrOrigine == Cliente.codiceCliente)
+            .where(Cliente.valutaCliente == market.Valuta.codValuta)
+        )
+
+        # Faccio analisi scostamenti per mercato (Market)
+        market.Valuta.analysisVariances = json.dumps(calcanalysisVariances(db.session.execute(stmt), False, market.Valuta.codValuta)).replace('null', 'None')
+        db.session.commit()
+
+    # Calc analysis variances by client
+    # Per ogni cliente faccio analisi scostamenti (Market > Client)
+    for client in db.session.execute(db.select(Cliente)):
+        stmt = (
+            db.select(Vendita.nrArticolo.label("nrArticolo")).distinct()
+            .select_from(Vendita)
+            .join(Cliente, Vendita.nrOrigine == Cliente.codiceCliente)
+            .where(Cliente.codiceCliente == client.Cliente.codiceCliente)
+            .where(Cliente.valutaCliente == client.Cliente.valutaCliente)
+        )
+        articles = db.session.execute(stmt)
+
+        tempData = {"id": client.Cliente.codiceCliente, "analysisVariances": calcanalysisVariances(articles, False, client.Cliente.valutaCliente, client.Cliente.codiceCliente), "article": []}
+
+        # Per ogni prodotto faccio analisi scostamenti (Market > Client > Article)
+        for item in db.session.execute(stmt):
+            tempData["article"].append({"id": item.nrArticolo, "analysisVariances": calcanalysisVariances([item], False, client.Cliente.valutaCliente, client.Cliente.codiceCliente)})
+        
+        client.Cliente.analysisVariances = json.dumps(tempData).replace('null', 'None')
+        db.session.commit()
 
     return "true"

@@ -3,25 +3,39 @@
 {% endblock %}
 {% block content %}
 
-<section>
-    <div class="container-fluid text-center">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+<!-- Analysis Variances -->
+<section class="pt-4">
+    <div class="container-fluid">
+        <div class="row row-cols-1">
             <div class="col">
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Analisi scostamento</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut.</p>
-                        <a href="/analysesVariances" class="btn btn-primary"><i class="fas fa-arrow-right"></i></a>
+                    <div id="analysisVariancesGeneralDiv" class="card-body text-center table-responsive">
+                        <h5 class="card-title text-start">Analisi degli scostamenti generale</h5>
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Caricamento dati...</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="row row-cols-1 row-cols-xl-2 g-4 pt-4">
             <div class="col">
-                <div class="card">
+                <div class="card h-100">
+                    <div class="card-body pb-1">
+                        <h5 class="card-title">Comparazione dati analisi generale</h5>
+                        <div id="chartAnalysisVariancesGeneral" style="height: 30vmax; max-height: 25rem"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Analisi per articolo</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut.</p>
-                        <a href="/specificaArticolo" class="btn btn-primary"><i class="fas fa-arrow-right"></i></a>
+                        <h5 class="card-title">Comparazione dati per market</h5>
+                        <div id="chartAnalysisVariancesMarket" style="height: 30vmax; max-height: 25rem"></div>
+                        <button type="button" class="btn btn-primary d-flex me-0 ms-auto" data-mdb-toggle="modal"
+                            data-mdb-target="#modalAnalysisVariancesMarket">
+                            Mostra dati divisi per market<i class="fas fa-arrow-right align-self-center ps-2"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -30,7 +44,7 @@
 </section>
 
 <!-- Article section -->
-<section class="pt-3">
+<section class="pt-4">
     <div class="container-fluid">
         <div class="row row-cols-1">
             <div class="col">
@@ -38,43 +52,41 @@
                     <div class="card-body">
                         <h5 class="card-title">Articoli analizzati</h5>
                         <!-- Article table -->
-                        <div class="overflow-auto" style="max-height: 50vmax;">
-                            <table class="table align-middle mb-0 bg-white">
-                                <thead class="bg-light sticky-top shadow-2">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Panzer</th>
-                                        <th>Panzer</th>
-                                        <th>Panzer</th>
-                                        <th>Dettagli</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for article in articles %}
-                                    <tr>
-                                        <td>
-                                            {{ article.nrArticolo }}
-                                        </td>
-                                        <td>
-                                            Panzer
-                                        </td>
-                                        <td>
-                                            Panzer
-                                        </td>
-                                        <td>
-                                            Panzer
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="buildModalArticle('{{ article.nrArticolo }}')"><i
-                                                    class="fas fa-arrow-right"></i></button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
+                        <table id="articlesTable" class="table align-middle mb-0 bg-white" style="width:100%">
+                            <thead class="bg-light sticky-top shadow-2">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Panzer</th>
+                                    <th>Pandzer</th>
+                                    <th>as</th>
+                                    <th>Dettagli</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in articles %}
+                                <tr>
+                                    <td>
+                                        {{ article.nrArticolo }}
+                                    </td>
+                                    <td>
+                                        Panzer
+                                    </td>
+                                    <td>
+                                        Panzer
+                                    </td>
+                                    <td>
+                                        Panzer
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="buildModalArticle('{{ article.nrArticolo }}')"><i
+                                                class="fas fa-arrow-right"></i></button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
@@ -101,7 +113,114 @@
     </div>
 </div>
 
+<!-- modal for analysis variances market -->
+<div class="modal fade" id="modalAnalysisVariancesMarket" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Analisi degli scostamenti per market</span></h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- template analysis variances table -->
+<template id="templateAnalysisVariances">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Budget</th>
+            <th scope="col">Δ</th>
+            <th scope="col">Mix standard</th>
+            <th scope="col">Δ</th>
+            <th scope="col">Mix effettivo</th>
+            <th scope="col">Δ</th>
+            <th scope="col">Consuntivo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Quantità</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">Ricavi</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">Costi</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row">MOL</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</template>
+
+{% endblock %}
+
+{% block custom_script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"
+    integrity="sha512-LYmkblt36DJsQPmCK+cK5A6Gp6uT7fLXQXAX0bMa763tf+DgiiH3+AwhcuGDAxM1SvlimjwKbkMPL3ZM1qLbag=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+    var barChartAnalysisVariancesGeneral;
+    var treemapChartAnalysisVariancesMarket;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Get data of general analysis variances
+        getAnalysisVariancesGeneral();
+
+        // Get data of general analysis variances
+        getAnalysisVariancesMarket();
+
+        // Initialize articles datatable
+        $('#articlesTable').DataTable();
+
+        // Initialize bar char
+        barChartAnalysisVariancesGeneral = echarts.init(document.getElementById('chartAnalysisVariancesGeneral'));
+        treemapChartAnalysisVariancesMarket = echarts.init(document.getElementById('chartAnalysisVariancesMarket'));
+        barChartAnalysisVariancesGeneral.showLoading();
+        treemapChartAnalysisVariancesMarket.showLoading();
+        window.onresize = (event) => {
+            barChartAnalysisVariancesGeneral.resize()
+            treemapChartAnalysisVariancesMarket.resize()
+        };
+    });
+
+
     /**
     * Get data and build modal
     * 
@@ -113,10 +232,261 @@
         const response = await fetch(`${window.location.origin}/article/${idArticle}`);
         let article = await response.json();
         modalArticle.querySelector('#idArticle').innerHTML = idArticle;
-        modalArticle.querySelector('#importoVendite').innerHTML = JSON.stringify(article) ;
+        modalArticle.querySelector('#importoVendite').innerHTML = JSON.stringify(article);
 
         let modalObj = new mdb.Modal(modalArticle)
         modalObj.show();
     }
+
+    /**
+    * Get analyses variances
+    */
+    async function getAnalysisVariancesGeneral() {
+        const jsonParams = ["Quantity", "RevenueCenter", "CostCenter", "Mol"];
+        const divTable = document.getElementById("analysisVariancesGeneralDiv");
+
+        let response = await fetch(`${window.location.origin}/analysisVariances`)
+            .then((e) => e.json())
+            .then((e) => {
+                // Prepare data
+                Object.keys(e).forEach(key => {
+                    // Reorder
+                    e[key] = { BUDGET: 0, mixStandard: 0, mixEffettivo: 0, CONSUNTIVO: 0, ...e[key] };
+                });
+                return e;
+            });
+
+        let table = document.createElement("table");
+        table.classList.add("text-end", "table", "pb-4");
+        table.innerHTML = document.getElementById("templateAnalysisVariances").innerHTML;
+        divTable.appendChild(table);
+
+        for (let i = 0; i < jsonParams.length; i++) {
+            let data = response[jsonParams[i]];
+
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.mixStandard - data.BUDGET);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.mixStandard);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(3).innerHTML = formatNumber(data.mixEffettivo - data.mixStandard);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(4).innerHTML = formatNumber(data.mixEffettivo);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(5).innerHTML = formatNumber(data.CONSUNTIVO - data.mixEffettivo);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(6).innerHTML = formatNumber(data.CONSUNTIVO);
+        }
+
+        removePlaceholders(divTable);
+
+        const labelData = ["RevenueCenter", "CostCenter", "Mol"]
+        // Table
+        option = {
+            grid: {
+                top: 15,
+                bottom: 30,
+                right: 15,
+                left: 60
+            },
+            tooltip: {
+                trigger: 'item',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ["Ricavi", "Costi", "Mol"]
+            },
+            yAxis: {
+                type: 'value',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            dataset: {
+                dimensions: ["name"].concat(Object.keys(response.Quantity)),
+                source: [
+                    { name: 'Ricavi', ...response.RevenueCenter },
+                    { name: 'Costi', ...response.CostCenter },
+                    { name: 'Mol', ...response.Mol },
+                ]
+            },
+            series: [
+                {
+                    type: 'bar',
+                },
+                {
+                    type: 'bar',
+                },
+                {
+                    type: 'bar',
+                },
+                {
+                    type: 'bar',
+                }
+            ]
+        };
+
+        barChartAnalysisVariancesGeneral.hideLoading();
+        barChartAnalysisVariancesGeneral.setOption(option);
+    }
+
+    /**
+    * Get analyses variances
+    */
+    async function getAnalysisVariancesMarket() {
+        const jsonParams = ["Quantity", "RevenueCenter", "CostCenter", "Mol"];
+        const type = ["BUDGET", "mixStandard", "mixEffettivo", "CONSUNTIVO"];
+        const currency = ["Euro", "Dollaro", "Yen"]
+        const bodyModal = document.getElementById("modalAnalysisVariancesMarket").getElementsByClassName("modal-body")[0];
+        let baseSerieOption = {
+            type: 'treemap',
+            leafDepth: 2,
+            label: {
+                show: true,
+                formatter: '{b}'
+            },
+            upperLabel: {
+                show: true,
+            },
+            itemStyle: {
+                borderColor: '#fff'
+            },
+            levels: [
+                {
+                    itemStyle: {
+                        borderWidth: 0,
+                        gapWidth: 5
+                    }
+                },
+                {
+                    itemStyle: {
+                        gapWidth: 1
+                    }
+                },
+                {
+                    colorSaturation: [0.35, 0.5],
+                    itemStyle: {
+                        gapWidth: 1,
+                        borderColorSaturation: 0.6
+                    }
+                }
+            ],
+            data: [],
+        }
+
+        let series = [];
+        let nameLegend = [];
+
+        let response = await fetch(`${window.location.origin}/analysisVariances/market`)
+            .then((e) => e.json());
+
+
+        jsonParams.forEach(param => {
+            type.forEach(type => {
+                let data = [];
+                Object.keys(response).forEach(key => {
+                    let subData = { name: currency[parseInt(key) - 1], value: response[key][param][type], children: [] }
+
+                    Object.keys(response[key].client).forEach(item => {
+                        let tempsubData = { name: response[key].client[item].id, value: response[key].client[item].analysisVariances[param][type], children: [] };
+
+                        Object.keys(response[key].client[item].article).forEach(product => {
+                            tempsubData.children.push({ name: response[key].client[item].article[product].id, value: response[key].client[item].article[product].analysisVariances[param][type] })
+                        });
+
+                        subData.children.push(tempsubData);
+                    });
+
+                    data.push(subData);
+                });
+                baseSerieOption.data = data;
+                baseSerieOption.name = `${param} ${type}`;
+                nameLegend.push(baseSerieOption.name);
+                series.push(JSON.parse(JSON.stringify(baseSerieOption))); // Deep copy
+            });
+        });
+
+        // Table
+        option = {
+            grid: {
+                top: 15,
+                bottom: 15,
+                right: 15,
+                left: 15
+            },
+            tooltip: {
+                formatter: function (info) {
+                    let symbol = info.seriesName.search("Quantity") ? '€' : 'unità';
+                    var value = isNaN(info.value) ? info.value : formatNumber(info.value, 0, 2);
+                    var treePathInfo = info.treePathInfo;
+                    var treePath = [];
+                    for (var i = 1; i < treePathInfo.length; i++) {
+                        treePath.push(treePathInfo[i].name);
+                    }
+                    return `<div class="tooltip-title">${treePath.join(' > ')}</div>
+                    Vendite: <b>${value} ${symbol}</b>`
+                }
+            },
+            legend: {
+                type: 'scroll',
+                data: nameLegend,
+                selectedMode: 'single',
+                itemGap: 5,
+                borderRadius: 5
+            },
+            series: series
+        };
+
+        treemapChartAnalysisVariancesMarket.hideLoading();
+        treemapChartAnalysisVariancesMarket.setOption(option);
+
+        // Populate modal
+        currency.forEach((market, index) => {
+            let title = document.createElement("h5");
+            title.textContent = market;
+            title.classList.add("mb-0")
+            bodyModal.appendChild(title);
+
+            let table = document.createElement("table");
+            table.classList.add("text-end", "table", "pb-4");
+            table.innerHTML = document.getElementById("templateAnalysisVariances").innerHTML;
+            bodyModal.appendChild(table);
+
+            for (let i = 0; i < jsonParams.length; i++) {
+                let data = Object.values(response)[index][jsonParams[i]];
+
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.mixStandard - data.BUDGET);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.mixStandard);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(3).innerHTML = formatNumber(data.mixEffettivo - data.mixStandard);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(4).innerHTML = formatNumber(data.mixEffettivo);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(5).innerHTML = formatNumber(data.CONSUNTIVO - data.mixEffettivo);
+                table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(6).innerHTML = formatNumber(data.CONSUNTIVO);
+            }
+        });
+    }
+
+    /**
+    * Format number to 123.456,789
+    * @param {Number} number 
+    * @param {Number} minimumFractionDigits 
+    * @param {Number} maximumFractionDigits 
+    * @returns {String} Stringa
+    */
+    function formatNumber(number, minimumFractionDigits = 2, maximumFractionDigits = 2) {
+        return number.toLocaleString('de-DE', { minimumFractionDigits: minimumFractionDigits, maximumFractionDigits: maximumFractionDigits });
+    }
+
+    /**
+    * Rimuove tutti i placeholder/spinner all'interno dell'elemento, compresi i figli
+    * 
+    * @param {HTMLElement} elem
+    */
+    function removePlaceholders(elem) {
+        for (let item of elem.querySelectorAll('.placeholder , .placeholder-wave, .placeholder-glow, .spinner-border')) {
+            item.classList.remove('placeholder', 'placeholder-wave', 'placeholder-glow', 'spinner-border')
+        }
+    }
+
 </script>
 {% endblock %}
