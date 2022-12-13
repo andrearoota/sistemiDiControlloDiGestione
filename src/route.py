@@ -4,14 +4,18 @@ import pandas as pandas
 from src import db
 from src.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
 from src.controller.importFromXLSX import importFromXLSX
+from src.controller.article import selectAllArticlesID, selectArticle
+
 import ast
 
 route = Blueprint('routing', __name__)
 
 @route.route("/")
 def home():
-    from src.controller.article import selectAllArticlesID
-    return render_template("dashboard.html", articles = selectAllArticlesID())
+    articles = []
+    for article in selectAllArticlesID():
+        articles.append(selectArticle(article.nrArticolo))
+    return render_template("dashboard.html", articles = articles)
 
 @route.route('/chi-siamo')
 def chiSiamo():
@@ -24,7 +28,6 @@ def renderUploadDataPage():
 @route.route("/analysisVariances")
 def analysisVariances():
     from src.controller.analysisVariances import calcanalysisVariances
-    from src.controller.article import selectAllArticlesID
     return calcanalysisVariances(selectAllArticlesID())
 
 @route.route("/analysisVariances/market")

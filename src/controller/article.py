@@ -246,6 +246,8 @@ def selectArticle(idArticle):
         Returns:
             JSON
     '''
+    from src.controller.analysisVariances import calcanalysisVariances
+    
     stmt = db.select(Article).where(Article.nrArticolo == idArticle)
     response = db.session.execute(stmt).one() 
 
@@ -253,5 +255,5 @@ def selectArticle(idArticle):
         "id": idArticle,
         "vendite": ast.literal_eval(response.Article.analysisVariancesRevenueCenter),
         "costi": ast.literal_eval(response.Article.analysisVariancesCostCenter),
-        #"MOL": MOL
+        "analysisVariances": calcanalysisVariances([response.Article])
         }
