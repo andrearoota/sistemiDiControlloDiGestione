@@ -43,9 +43,49 @@
         <div class="row row-cols-1 row-cols-xl-2 g-4 pt-4">
             <div class="col">
                 <div class="card h-100">
-                    <div class="card-body pb-1">
+                    <div class="card-body table-responsive pb-1">
                         <h5 class="card-title">Comparazione vendite con valuta a consuntivo</h5>
-
+                        <table class="table align-middle mb-0 bg-white" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Budget</th>
+                                    <th scope="col">Δ</th>
+                                    <th scope="col">Mix standard</th>
+                                    <th scope="col">Δ</th>
+                                    <th scope="col">Mix effettivo</th>
+                                    <th scope="col">Δ</th>
+                                    <th scope="col">Consuntivo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Quantità</th>
+                                    <td>{{ analysis["BUDGET"]["quantity"] }}</td>
+                                    <td>{{ analysis["mixStandard"]["quantity"] - analysis["BUDGET"]["quantity"] }}</td>
+                                    <td>{{ analysis["mixStandard"]["quantity"] }}</td>
+                                    <td>{{ analysis["mixEffettivo"]["quantity"] - analysis["mixStandard"]["quantity"] }}
+                                    </td>
+                                    <td>{{ analysis["mixEffettivo"]["quantity"] }}</td>
+                                    <td>{{ analysis["CONSUNTIVO"]["quantity"] - analysis["mixEffettivo"]["quantity"] }}
+                                    </td>
+                                    <td>{{ analysis["CONSUNTIVO"]["quantity"] }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Ricavi</th>
+                                    <td>{{ analysis["BUDGET"]["unitPrice"] }}</td>
+                                    <td>{{ analysis["mixStandard"]["unitPrice"] - analysis["BUDGET"]["unitPrice"] }}
+                                    </td>
+                                    <td>{{ analysis["mixStandard"]["unitPrice"] }}</td>
+                                    <td>{{ analysis["mixEffettivo"]["unitPrice"] - analysis["mixStandard"]["unitPrice"]
+                                        }}</td>
+                                    <td>{{ analysis["mixEffettivo"]["unitPrice"] }}</td>
+                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] - analysis["mixEffettivo"]["unitPrice"]
+                                        }}</td>
+                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -53,11 +93,17 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Scostamento costo orario risorse</h5>
-                        <div id="chartAnalysisVariancesMarket" style="height: 30vmax; max-height: 25rem"></div>
-                        <button type="button" class="btn btn-primary d-flex me-0 ms-auto" data-mdb-toggle="modal"
-                            data-mdb-target="#modalAnalysisVariancesMarket">
-                            Mostra dati divisi per market<i class="fas fa-arrow-right align-self-center ps-2"></i>
-                        </button>
+                        <table id="variancesVariableCostsTable" class="table align-middle mb-0 bg-white"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Costo orario a <b>budget</b></th>
+                                    <th>Costo orario a <b>consuntivo</b></th>
+                                    <th>Scostamento</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -78,9 +124,9 @@
                             <thead class="bg-light sticky-top shadow-2">
                                 <tr>
                                     <th>Articolo</th>
-                                    <th>MOL budget</th>
-                                    <th>MOL consuntivo</th>
-                                    <th>Scostamento</th>
+                                    <th>MOL budget <span class="text-muted">€</span></th>
+                                    <th>MOL consuntivo <span class="text-muted">€</span></th>
+                                    <th>Scostamento <span class="text-muted">€</span></th>
                                     <th>Dettagli</th>
                                 </tr>
                             </thead>
@@ -97,12 +143,8 @@
                                         {{ article["analysisVariances"]["Mol"]["CONSUNTIVO"] }}
                                     </td>
                                     <td>
-                                        {% if article["analysisVariances"]["Mol"]["BUDGET"] != 0 %}
                                         {{ (article["analysisVariances"]["Mol"]["CONSUNTIVO"] -
-                                        article["analysisVariances"]["Mol"]["BUDGET"]) /
-                                        article["analysisVariances"]["Mol"]["BUDGET"] * 100 }}
-                                        {% else %}
-                                        {% endif %}
+                                        article["analysisVariances"]["Mol"]["BUDGET"]) }}
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary" aria-id="{{ article['id'] }}"
@@ -124,14 +166,13 @@
 
 <!-- modal for article -->
 <div class="modal fade" id="modalArticle" tabindex="-1" aria-labelledby="modalArticle" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Articolo <span id="idArticle"></span></h5>
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <b>Vendite: </b><span id="importoVendite"></span> €
+            <div class="modal-body table-responsive">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Chiudi</button>
@@ -149,7 +190,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Analisi degli scostamenti per market</span></h5>
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body table-responsive">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Chiudi</button>
@@ -247,11 +288,48 @@
                 targets: [3],
                 render: function (data, type, row, meta) {
                     data = +data;
-                    let color = (data >= 0) ? "badge-success" : "badge-danger";
-                    return `<span class="badge ${color} rounded-pill d-inline">${formatNumber(+data, 2, 2)}%</span>`;
+                    if (data >= 0) {
+                        icon = "fa-caret-up";
+                        color = "badge-success";
+                    } else {
+                        icon = "fa-caret-down";
+                        color = "badge-danger";
+                    }
+                    return `<span class="badge ${color} rounded-pill d-inline">${formatNumber(+data, 2, 2)} <i class="fas ${icon}"></i></span>`;
                 }
             }]
 
+        });
+
+        // Initialize Variable Costs datatable
+        $('#variancesVariableCostsTable').DataTable({
+            responsive: true,
+            ajax: {
+                url: `${window.location.origin}/resource`,
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'costoOrarioBudget' },
+                { data: 'costoOrarioConsuntivo' },
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        data = ((row.costoOrarioConsuntivo - row.costoOrarioBudget) / row.costoOrarioBudget) * 100;
+                        if (data < 0) {
+                            icon = "fa-caret-down";
+                            color = "badge-success";
+                        } else {
+                            icon = "fa-caret-up";
+                            color = "badge-danger";
+                        }
+                        return `<span class="badge ${color} rounded-pill d-inline">${formatNumber(+data, 2, 2)}% <i class="fas ${icon}"></i></span>`;
+                    }
+                },
+            ],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/it-IT.json'
+            },
         });
 
         // Initialize bar char
@@ -274,11 +352,127 @@
     async function buildModalArticle(e) {
         idArticle = e.getAttribute('aria-id');
         const modalArticle = document.getElementById('modalArticle');
+        const jsonParams = ["Quantity", "RevenueCenter", "CostCenter", "Mol"];
+        const bodyModal = modalArticle.getElementsByClassName("modal-body")[0];
 
-        const response = await fetch(`${window.location.origin}/article/${idArticle}`);
-        let article = await response.json();
+        let response = await fetch(`${window.location.origin}/article/${idArticle}`)
+            .then((e) => e.json())
+            .then((e) => {
+                // Prepare data
+                Object.keys(e).forEach(key => {
+                    // Reorder
+                    e[key] = { BUDGET: 0, mixStandard: 0, mixEffettivo: 0, CONSUNTIVO: 0, ...e[key] };
+                });
+                return e;
+            });
         modalArticle.querySelector('#idArticle').innerHTML = idArticle;
-        modalArticle.querySelector('#importoVendite').innerHTML = JSON.stringify(article);
+
+        bodyModal.innerHTML = "";
+
+        let title = document.createElement("h5");
+        title.textContent = "Analisi degli scostamenti";
+        title.classList.add("mb-0")
+        bodyModal.appendChild(title);
+
+        let table = document.createElement("table");
+        table.classList.add("text-end", "table", "pb-4");
+        table.innerHTML = document.getElementById("templateAnalysisVariances").innerHTML;
+        bodyModal.appendChild(table);
+
+        for (let i = 0; i < jsonParams.length; i++) {
+            let data = response.analysisVariances[jsonParams[i]];
+
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.mixStandard - data.BUDGET);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.mixStandard);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(3).innerHTML = formatNumber(data.mixEffettivo - data.mixStandard);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(4).innerHTML = formatNumber(data.mixEffettivo);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(5).innerHTML = formatNumber(data.CONSUNTIVO - data.mixEffettivo);
+            table.getElementsByTagName("tr").item(i + 1).getElementsByTagName("td").item(6).innerHTML = formatNumber(data.CONSUNTIVO);
+        }
+
+        title = document.createElement("h5");
+        title.textContent = "Analisi produzione";
+        title.classList.add("mb-0")
+        bodyModal.appendChild(title);
+        table = document.createElement("table");
+        table.classList.add("text-end", "table", "pb-4");
+        table.innerHTML = document.getElementById("templateAnalysisVariances").innerHTML;
+        bodyModal.appendChild(table);
+
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+
+        let data = response.costi
+
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET.queryQuantity);
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.CONSUNTIVO.queryQuantity - data.BUDGET.queryQuantity);
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.CONSUNTIVO.queryQuantity);
+
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("th").item(0).innerHTML = "Costi unitari MP";
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET.costs.costsRawMaterial);
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.CONSUNTIVO.costs.costsRawMaterial - data.BUDGET.costs.costsRawMaterial);
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.CONSUNTIVO.costs.costsRawMaterial);
+
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("th").item(0).innerHTML = "Costi unitari risorse";
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET.costs.costsVariable);
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.CONSUNTIVO.costs.costsVariable - data.BUDGET.costs.costsVariable);
+        table.getElementsByTagName("tr").item(3).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.CONSUNTIVO.costs.costsVariable);
+
+        table.getElementsByTagName("tr").item(4).remove()
+
+        title = document.createElement("h5");
+        title.textContent = "Analisi vendite";
+        title.classList.add("mb-0")
+        bodyModal.appendChild(title);
+        table = document.createElement("table");
+        table.classList.add("text-end", "table", "pb-4");
+        table.innerHTML = document.getElementById("templateAnalysisVariances").innerHTML;
+        bodyModal.appendChild(table);
+
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).remove();
+
+        data = response.vendite
+
+        data.BUDGET.quantitySales = data.BUDGET.percentageOutput * data.BUDGET.quantity
+        data.CONSUNTIVO.quantitySales = data.CONSUNTIVO.percentageOutput * data.CONSUNTIVO.quantity
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET.quantitySales);
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.CONSUNTIVO.quantitySales - data.BUDGET.quantitySales);
+        table.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.CONSUNTIVO.quantitySales);
+
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("th").item(0).innerHTML = "Prezzo unitario";
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(0).innerHTML = formatNumber(data.BUDGET.unitPrice);
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).remove();
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(1).innerHTML = formatNumber(data.CONSUNTIVO.unitPrice - data.BUDGET.unitPrice);
+        table.getElementsByTagName("tr").item(2).getElementsByTagName("td").item(2).innerHTML = formatNumber(data.CONSUNTIVO.unitPrice);
+
+        table.getElementsByTagName("tr").item(3).remove();
+        table.getElementsByTagName("tr").item(3).remove();
+
 
         let modalObj = new mdb.Modal(modalArticle)
         modalObj.show();
