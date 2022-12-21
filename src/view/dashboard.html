@@ -43,7 +43,7 @@
         <div class="row row-cols-1 row-cols-xl-2 g-4 pt-4">
             <div class="col">
                 <div class="card h-100">
-                    <div class="card-body table-responsive pb-1">
+                    <div class="card-body table-responsive pb-1" id="tableExchangeRate">
                         <h5 class="card-title">Comparazione vendite con valuta a consuntivo</h5>
                         <table class="table align-middle mb-0 bg-white" style="width:100%">
                             <thead>
@@ -64,13 +64,16 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Ricavi</th>
-                                    <td>{{ analysis["BUDGET"]["unitPrice"] }}</td>
-                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] - analysis["BUDGET"]["unitPrice"]
+                                    <td name="toRound">{{ analysis["BUDGET"]["unitPrice"] }}</td>
+                                    <td name="toRound">{{ analysis["CONSUNTIVO"]["unitPrice"] -
+                                        analysis["BUDGET"]["unitPrice"]
                                         }}</td>
-                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] }}</td>
+                                    <td name="toRound">{{ analysis["CONSUNTIVO"]["unitPrice"] }}</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <h5 class="card-title pt-4">Comparazione tassi di cambio</h5>
                         <table class="table align-middle mb-0 bg-white" style="width:100%">
                             <thead>
                                 <tr>
@@ -81,16 +84,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% with currencyName = ["Euro", "Dollaro", "Yen"] %}
                                 {% for currency in currencies %}
                                 <tr>
-                                    <th scope="row">{{ currency["codValuta"] }}</th>
-                                    <td>{{ currency["tassoBudget"] }}</td>
-                                    <td>{{ currency["tassoConsuntivo"] -
+                                    <th scope="row">{{ currencyName[currency["currencyCode"] - 1] }}</th>
+                                    <td name="toRound">{{ currency["tassoBudget"] }}</td>
+                                    <td name="toRound">{{ currency["tassoConsuntivo"] -
                                         currency["tassoBudget"] }}
                                     </td>
-                                    <td>{{ currency["tassoConsuntivo"] }}</td>
+                                    <td name="toRound">{{ currency["tassoConsuntivo"] }}</td>
                                 </tr>
                                 {% endfor %}
+                                {% endwith %}
                             </tbody>
                         </table>
                     </div>
@@ -280,6 +285,11 @@
 
         // Get data of general analysis variances
         getAnalysisVariancesMarket();
+
+        // Round all data in tableExchangeRate
+        document.getElementsByName("toRound").forEach(item => {
+            item.innerHTML = formatNumber(+item.innerHTML, 3, 3)
+        });
 
         // Initialize articles datatable
         $('#articlesTable').DataTable({

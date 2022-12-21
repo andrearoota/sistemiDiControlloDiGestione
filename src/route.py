@@ -44,7 +44,7 @@ def home():
             .where(Sales.budOrCons == type)
         )
 
-        analysisVariancesRevenueCenter[type]["unitPrice"] = round(db.session.scalars(stmt).one(), 2)
+        analysisVariancesRevenueCenter[type]["unitPrice"] = db.session.scalars(stmt).one()
         analysisVariancesRevenueCenter[type]["quantity"] = totalSalesQuantity[type] # Total sales volume
     
     # Get currency
