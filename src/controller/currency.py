@@ -1,4 +1,4 @@
-from src.model.model import Cliente, Valuta
+from src.model.model import Client, Currency
 from src import db
 
 def currencyConversion (initialValue, clientCode, type):
@@ -17,10 +17,10 @@ def currencyConversion (initialValue, clientCode, type):
     type = type.upper()
     
     # Get exchange rate from database
-    stmt = (db.select(Valuta.tassoCambioMedio)
-    .select_from(Cliente)
-    .join(Valuta, Valuta.codValuta == Cliente.valutaCliente)
-    .where(Cliente.codiceCliente == clientCode)
-    .where(Valuta.budOCons == type)
+    stmt = (db.select(Currency.exchangeRate)
+    .select_from(Client)
+    .join(Currency, Currency.currencyCode == Client.currency)
+    .where(Client.clientCode == clientCode)
+    .where(Currency.budOrCons == type)
     )
     return initialValue / db.session.scalars(stmt).one()

@@ -58,7 +58,7 @@ def calcanalysisVariances(idArticles, withCache = True, market = None, client = 
 
     for idArticle in idArticles:
         if withCache:
-            stmt = db.select(Article).where(Article.nrArticolo == idArticle.nrArticolo)
+            stmt = db.select(Article).where(Article.articleNumber == idArticle.articleNumber)
             for item in db.session.execute(stmt):
                 # Analisi centro di ricavo: ∑(prezzo vendita unitario * volume totale di vendita * percentuale di output)
                 articlesRevenueCenter.append(eval(item.Article.analysisVariancesRevenueCenter))
@@ -70,9 +70,9 @@ def calcanalysisVariances(idArticles, withCache = True, market = None, client = 
             totalSalesQuantity = countSales()
 
             # Analisi centro di ricavo: ∑(prezzo vendita unitario * volume totale di vendita * percentuale di output)
-            articlesRevenueCenter.append(analysisVariancesRevenueCenterByArticle(idArticle.nrArticolo, totalSalesQuantity, market, client))
+            articlesRevenueCenter.append(analysisVariancesRevenueCenterByArticle(idArticle.articleNumber, totalSalesQuantity, market, client))
             # Analisi centro di costo: volume produttivo * ∑(impiego risorsa * costo risorsa)
-            articlesCostCenter.append(analysisVariancesCostCenterByArticle(idArticle.nrArticolo, totalSalesQuantity, market, client))
+            articlesCostCenter.append(analysisVariancesCostCenterByArticle(idArticle.articleNumber, totalSalesQuantity, market, client))
 
     # Calcolo budget, mix standard/effettivo e consuntivo per il centro di ricavo
     for item in articlesRevenueCenter:

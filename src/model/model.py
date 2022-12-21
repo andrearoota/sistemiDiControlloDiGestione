@@ -1,42 +1,42 @@
 from src import db
 
-class Cliente(db.Model):
-    codiceCliente = db.Column(db.String(8), primary_key=True)
-    fattureCumulative = db.Column(db.String(6))
-    valutaCliente = db.Column(db.Integer, db.ForeignKey('valuta.codValuta'))
-    vendite = db.relationship('Vendita')
+class Client(db.Model):
+    clientCode = db.Column(db.String(8), primary_key=True)
+    cumulativeInvoices = db.Column(db.String(6))
+    currency = db.Column(db.Integer, db.ForeignKey('currency.currencyCode'))
+    sales = db.relationship('Sales')
     analysisVariances = db.Column(db.Text())
 
-class Valuta(db.Model):
-    codValuta = db.Column(db.Integer, primary_key=True)
-    budOCons = db.Column(db.String(10), primary_key=True) #budget o consuntivo
-    tassoCambioMedio = db.Column(db.Float)
+class Currency(db.Model):
+    currencyCode = db.Column(db.Integer, primary_key=True)
+    budOrCons = db.Column(db.String(10), primary_key=True) # budget o consuntivo
+    exchangeRate = db.Column(db.Float)
     analysisVariances = db.Column(db.Text())
 
-class Vendita(db.Model):
-    nrMovimentoV = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.String(10),db.ForeignKey('valuta.budOCons'))  # budget o consuntivo
-    nrArticolo = db.Column(db.String(11), db.ForeignKey('article.nrArticolo'))
-    nrOrigine = db.Column(db.String(8), db.ForeignKey('cliente.codiceCliente'))
-    qta = db.Column(db.Integer)
-    importoVenditeVL = db.Column(db.Float)  #importo totale delle vendite in valuta locale
+class Sales(db.Model):
+    movementNumberS = db.Column(db.Integer, primary_key=True)
+    budOrCons = db.Column(db.String(10),db.ForeignKey('currency.budOrCons'))  # budget o consuntivo
+    articleNumber = db.Column(db.String(11), db.ForeignKey('article.articleNumber'))
+    originNumber = db.Column(db.String(8), db.ForeignKey('client.clientCode'))
+    quantityS = db.Column(db.Integer)
+    salesAmount = db.Column(db.Float)  # importo totale delle vendite in valuta locale
 
-class Consumo(db.Model):
-    nrMovimentoC = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.String(10))  # budget o consuntivo
-    codiceMP = db.Column(db.String(10))
-    nrArticolo = db.Column(db.String(10), db.ForeignKey('article.nrArticolo'))
+class Consumption(db.Model):
+    movementNumberC = db.Column(db.Integer, primary_key=True)
+    budOrCons = db.Column(db.String(10))  # budget o consuntivo
+    rawMaterialCode = db.Column(db.String(10))
+    articleNumber = db.Column(db.String(10), db.ForeignKey('article.articleNumber'))
     nrDocumentoODP = db.Column(db.String(11))
-    qtaC = db.Column(db.Integer)
-    importoTotaleC = db.Column(db.Float)
+    quantityC = db.Column(db.Integer)
+    totalAmountC = db.Column(db.Float)
 
 class Impiego(db.Model):
     idImpiego = db.Column(db.Integer, primary_key=True)
-    nrArticolo = db.Column(db.String(10), db.ForeignKey('article.nrArticolo'))
-    tipo = db.Column(db.String(10))  # budget o consuntivo
-    nrODP = db.Column(db.String(11), db.ForeignKey('consumo.nrDocumentoODP'))
-    descrizione = db.Column(db.String(20)) #qua metto il reparto
-    areaProd = db.Column(db.String(3), db.ForeignKey('risorsa.areaProd'))  #qua metto il codice
+    articleNumber = db.Column(db.String(10), db.ForeignKey('article.articleNumber'))
+    budOrCons = db.Column(db.String(10))  # budget o consuntivo
+    nrODP = db.Column(db.String(11), db.ForeignKey('consumption.nrDocumentoODP'))
+    descrizione = db.Column(db.String(20))
+    areaProd = db.Column(db.String(3), db.ForeignKey('risorsa.areaProd'))
     risorsa = db.Column(db.String(5), db.ForeignKey('risorsa.codRisorsa'))
     tempoRisorsa = db.Column(db.Float)
     qtaOutput = db.Column(db.Integer)
@@ -48,6 +48,6 @@ class Risorsa(db.Model):
     costoOrarioConsuntivo = db.Column(db.Float)
 
 class Article(db.Model):
-    nrArticolo = db.Column(db.String(11), primary_key=True)
+    articleNumber = db.Column(db.String(11), primary_key=True)
     analysisVariancesCostCenter = db.Column(db.Text())
     analysisVariancesRevenueCenter = db.Column(db.Text())

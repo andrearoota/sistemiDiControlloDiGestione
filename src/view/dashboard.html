@@ -51,10 +51,6 @@
                                     <th scope="col"></th>
                                     <th scope="col">Budget</th>
                                     <th scope="col">Δ</th>
-                                    <th scope="col">Mix standard</th>
-                                    <th scope="col">Δ</th>
-                                    <th scope="col">Mix effettivo</th>
-                                    <th scope="col">Δ</th>
                                     <th scope="col">Consuntivo</th>
                                 </tr>
                             </thead>
@@ -62,28 +58,39 @@
                                 <tr>
                                     <th scope="row">Quantità</th>
                                     <td>{{ analysis["BUDGET"]["quantity"] }}</td>
-                                    <td>{{ analysis["mixStandard"]["quantity"] - analysis["BUDGET"]["quantity"] }}</td>
-                                    <td>{{ analysis["mixStandard"]["quantity"] }}</td>
-                                    <td>{{ analysis["mixEffettivo"]["quantity"] - analysis["mixStandard"]["quantity"] }}
-                                    </td>
-                                    <td>{{ analysis["mixEffettivo"]["quantity"] }}</td>
-                                    <td>{{ analysis["CONSUNTIVO"]["quantity"] - analysis["mixEffettivo"]["quantity"] }}
+                                    <td>{{ analysis["CONSUNTIVO"]["quantity"] - analysis["BUDGET"]["quantity"] }}
                                     </td>
                                     <td>{{ analysis["CONSUNTIVO"]["quantity"] }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Ricavi</th>
                                     <td>{{ analysis["BUDGET"]["unitPrice"] }}</td>
-                                    <td>{{ analysis["mixStandard"]["unitPrice"] - analysis["BUDGET"]["unitPrice"] }}
-                                    </td>
-                                    <td>{{ analysis["mixStandard"]["unitPrice"] }}</td>
-                                    <td>{{ analysis["mixEffettivo"]["unitPrice"] - analysis["mixStandard"]["unitPrice"]
-                                        }}</td>
-                                    <td>{{ analysis["mixEffettivo"]["unitPrice"] }}</td>
-                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] - analysis["mixEffettivo"]["unitPrice"]
+                                    <td>{{ analysis["CONSUNTIVO"]["unitPrice"] - analysis["BUDGET"]["unitPrice"]
                                         }}</td>
                                     <td>{{ analysis["CONSUNTIVO"]["unitPrice"] }}</td>
                                 </tr>
+                            </tbody>
+                        </table>
+                        <table class="table align-middle mb-0 bg-white" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Valuta</th>
+                                    <th scope="col">Budget</th>
+                                    <th scope="col">Δ</th>
+                                    <th scope="col">Consuntivo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for currency in currencies %}
+                                <tr>
+                                    <th scope="row">{{ currency["codValuta"] }}</th>
+                                    <td>{{ currency["tassoBudget"] }}</td>
+                                    <td>{{ currency["tassoConsuntivo"] -
+                                        currency["tassoBudget"] }}
+                                    </td>
+                                    <td>{{ currency["tassoConsuntivo"] }}</td>
+                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

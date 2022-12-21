@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 import pandas as pandas
 from src import db
-from src.model.model import Cliente, Valuta, Vendita, Consumo, Impiego, Risorsa
+from src.model.model import Client, Currency, Sales, Consumption, Impiego, Risorsa
 from src.controller.importFromXLSX import importFromXLSX
 from src.controller.article import selectAllArticlesID, selectArticle
 import copy
@@ -16,7 +16,7 @@ def home():
     # Dati articolo
     articles = []
     for article in selectAllArticlesID():
-        articles.append(selectArticle(article.nrArticolo))
+        articles.append(selectArticle(article.articleNumber))
 
     # Calcolo scostamenti con valuta a consuntivo
         # Definizione strutture base
@@ -38,23 +38,27 @@ def home():
 
     for type in ["BUDGET", "CONSUNTIVO"]:
         stmt = (
-            db.select(db.func.sum(Vendita.importoVenditeVL / Valuta.tassoCambioMedio).label("unitPrice"))
-            .join(Cliente)
-            .join(Valuta, (Valuta.codValuta == Cliente.valutaCliente) & (Valuta.budOCons == "CONSUNTIVO"))
-            .where(Vendita.tipo == type)
+            db.select(db.func.sum(Sales.salesAmount / Currency.exchangeRate).label("unitPrice"))
+            .join(Client)
+            .join(Currency, (Currency.currencyCode == Client.currency) & (Currency.budOrCons == "CONSUNTIVO"))
+            .where(Sales.budOrCons == type)
         )
 
-        analysisVariancesRevenueCenter[type]["unitPrice"] = db.session.scalars(stmt).one()
+        analysisVariancesRevenueCenter[type]["unitPrice"] = round(db.session.scalars(stmt).one(), 2)
         analysisVariancesRevenueCenter[type]["quantity"] = totalSalesQuantity[type] # Total sales volume
-
-    # Mix data to calculate mix standard and mix effettivo 
-    analysisVariancesRevenueCenter["mixStandard"]["unitPrice"] = analysisVariancesRevenueCenter["BUDGET"]["unitPrice"]
-    analysisVariancesRevenueCenter["mixStandard"]["quantity"] = analysisVariancesRevenueCenter["CONSUNTIVO"]["quantity"]
     
-    analysisVariancesRevenueCenter["mixEffettivo"]["unitPrice"] = analysisVariancesRevenueCenter["BUDGET"]["unitPrice"]
-    analysisVariancesRevenueCenter["mixEffettivo"]["quantity"] = analysisVariancesRevenueCenter["CONSUNTIVO"]["quantity"] ### DA SISTEMARE
+    # Get currency
+    stmt = (
+        db.text(
+            "SELECT Currency.currencyCode, Currency.exchangeRate AS tassoBudget, CurrencyCons.exchangeRate AS tassoConsuntivo \
+                FROM Currency \
+                    INNER JOIN Currency as CurrencyCons ON Currency.currencyCode = CurrencyCons.currencyCode AND CurrencyCons.budOrCons LIKE 'CONSUNTIVO' \
+                        WHERE Currency.budOrCons LIKE 'BUDGET'"
+        )
+    )
+    currencies = db.session.execute(stmt)
 
-    return render_template("dashboard.html", articles = articles, analysis = analysisVariancesRevenueCenter)
+    return render_template("dashboard.html", articles = articles, analysis = analysisVariancesRevenueCenter, currencies = currencies)
 
 @route.route('/chi-siamo')
 def chiSiamo():
@@ -74,22 +78,22 @@ def analysisVariancesMarket():
     from src.controller.analysisVariances import calcanalysisVariances
     response = {}
 
-    stmt = db.select(Valuta).distinct().where(Valuta.budOCons == "BUDGET")
+    stmt = db.select(Currency).distinct().where(Currency.budOrCons == "BUDGET")
     for market in db.session.execute(stmt): # Calcoli per ogni market
 
         # Faccio analisi scostamenti per mercato (Market)
-        response[market.Valuta.codValuta] = ast.literal_eval(market.Valuta.analysisVariances)
+        response[market.Currency.currencyCode] = ast.literal_eval(market.Currency.analysisVariances)
         
         # Trovo i clienti che hanno acquistato in un mercato
-        response[market.Valuta.codValuta]["client"] = []
+        response[market.Currency.currencyCode]["client"] = []
         stmt = (
-            db.select(Cliente)
-            .where(Cliente.valutaCliente == market.Valuta.codValuta)
+            db.select(Client)
+            .where(Client.currency == market.Currency.currencyCode)
         )
 
         # Per ogni cliente faccio analisi scostamenti (Market > Client)
         for client in db.session.execute(stmt):            
-            response[market.Valuta.codValuta]["client"].append(ast.literal_eval(client.Cliente.analysisVariances))
+            response[market.Currency.currencyCode]["client"].append(ast.literal_eval(client.Client.analysisVariances))
 
     return response
 
@@ -136,23 +140,23 @@ def getResource():
         })
 
     stmt = (
-        db.text("SELECT Consumo.codiceMP, Consumo.tipo, AVG(Consumo.importoTotaleC / Consumo.qtaC) AS costo \
-            FROM Consumo \
-            GROUP BY codiceMP, tipo \
-            ORDER BY Consumo.codiceMP, Consumo.tipo")
+        db.text("SELECT Consumption.rawMaterialCode, Consumption.budOrCons, AVG(Consumption.totalAmountC / Consumption.quantityC) AS costo \
+            FROM Consumption \
+            GROUP BY Consumption.rawMaterialCode, Consumption.budOrCons \
+            ORDER BY Consumption.rawMaterialCode, Consumption.budOrCons")
     )
     '''
     lastMP = ""
     for item in db.session.execute(stmt):
-        if lastMP == item.codiceMP:
+        if lastMP == item.rawMaterialCode:
             if item.tipo == "BUDGET":
                 response[len(response)-1]["costoOrarioBudget"] = item.costo
             else:
                 response[len(response)-1]["costoOrarioConsuntivo"] = item.costo
             lastMP = ""
-        elif lastMP == "" or lastMP != item.codiceMP:
+        elif lastMP == "" or lastMP != item.rawMaterialCode:
             response.append({
-                "id": item.codiceMP,
+                "id": item.rawMaterialCode,
                 "tipo": "materia prima",
                 "costoOrarioBudget": None,
                 "costoOrarioConsuntivo": None,
@@ -162,7 +166,7 @@ def getResource():
             else:
                 response[len(response)-1]["costoOrarioConsuntivo"] = item.costo
 
-            lastMP = item.codiceMP
+            lastMP = item.rawMaterialCode
     '''
     return response
 

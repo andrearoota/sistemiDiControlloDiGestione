@@ -1,5 +1,5 @@
 from src import db
-from src.model.model import Vendita
+from src.model.model import Sales
 
 __BUDGET_CONSUNTIVO__ = ["BUDGET", "CONSUNTIVO"]
 
@@ -16,8 +16,8 @@ def countSales():
     totalSalesQuantity = dict()
     for type in __BUDGET_CONSUNTIVO__:
         stmt = (
-            db.select(db.func.sum(Vendita.qta))
-            .where(Vendita.tipo == type)
+            db.select(db.func.sum(Sales.quantityS))
+            .where(Sales.budOrCons == type)
         )
         totalSalesQuantity[type] = db.session.scalars(stmt).one()
 

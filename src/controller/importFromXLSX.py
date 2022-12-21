@@ -1,5 +1,5 @@
 from pandas import pandas
-from src.model.model import Cliente, Vendita, Consumo, Impiego, Risorsa, Valuta, Article
+from src.model.model import Client, Sales, Consumption, Impiego, Risorsa, Currency, Article
 from src.controller.article import selectAllArticlesID, analysisVariancesCostCenterByArticle, analysisVariancesRevenueCenterByArticle, countSales
 from src.controller.analysisVariances import calcanalysisVariances
 from src import db
@@ -22,74 +22,74 @@ def importFromXLSX():
     db.create_all()
     db.session.commit()
 
-    # Insert Cliente
+    # Insert Client
     # Read from file .xlsx and insert into database
     df = pandas.read_excel(f"{__FILES_DIRECTORY__}clienti.xlsx")
     records = []
     for i in range(len(df)):
-        codiceCliente = df.iloc[i, 0]
-        fattureCumulative = df.iloc[i, 2]
-        valutaCliente = int(df.iloc[i, 3])
-        records.append(Cliente(codiceCliente=codiceCliente, fattureCumulative=fattureCumulative,
-                                valutaCliente=valutaCliente))
+        clientCode = df.iloc[i, 0]
+        cumulativeInvoices = df.iloc[i, 2]
+        currency = int(df.iloc[i, 3])
+        records.append(Client(clientCode=clientCode, cumulativeInvoices=cumulativeInvoices,
+                                currency=currency))
         
     db.session.add_all(records)
     db.session.commit()
 
-    # Insert Valuta
+    # Insert Currency
     # Read from file .xlsx and insert into database
     df = pandas.read_excel(f"{__FILES_DIRECTORY__}tassi Di Cambio.xlsx")
     records = []
     for i in range(len(df)):
-        codValuta = int(df.iloc[i, 0])
-        budOCons = df.iloc[i, 1].upper()
-        tassoCambioMedio = str(df.iloc[i, 2])
-        tassoCambioMedio = tassoCambioMedio.replace(",",".")
-        tassoCambioMedio = float(tassoCambioMedio)
-        records.append(Valuta(codValuta=codValuta, budOCons=budOCons, tassoCambioMedio=tassoCambioMedio))
+        currencyCode = int(df.iloc[i, 0])
+        budOrCons = df.iloc[i, 1].upper()
+        exchangeRate = str(df.iloc[i, 2])
+        exchangeRate = exchangeRate.replace(",",".")
+        exchangeRate = float(exchangeRate)
+        records.append(Currency(currencyCode=currencyCode, budOrCons=budOrCons, exchangeRate=exchangeRate))
 
     db.session.add_all(records)
     db.session.commit()
 
-    # Insert Vendita
+    # Insert Sales
     # Read from file .xlsx and insert into database
     df = pandas.read_excel(f"{__FILES_DIRECTORY__}Vendite.xlsx")
     records = []
     for i in range(len(df)):
-        nrMovimentoV = int(df.iloc[i, 0])
-        tipo = df.iloc[i, 1].upper()
-        nrArticolo = df.iloc[i, 3]
-        nrOrigine = df.iloc[i, 5]
-        qta = int(df.iloc[i, 6])
-        importoVenditeVL = str(df.iloc[i, 7])
-        importoVenditeVL = importoVenditeVL.replace(",",".")
-        importoVenditeVL = float(importoVenditeVL)
-        records.append(Vendita(nrMovimentoV=nrMovimentoV, tipo=tipo, nrArticolo=nrArticolo,
-                                nrOrigine=nrOrigine,
-                                qta=qta, importoVenditeVL=importoVenditeVL))
+        movementNumberS = int(df.iloc[i, 0])
+        budOrCons = df.iloc[i, 1].upper()
+        articleNumber = df.iloc[i, 3]
+        originNumber = df.iloc[i, 5]
+        quantityS = int(df.iloc[i, 6])
+        salesAmount = str(df.iloc[i, 7])
+        salesAmount = salesAmount.replace(",",".")
+        salesAmount = float(salesAmount)
+        records.append(Sales(movementNumberS=movementNumberS, budOrCons=budOrCons, articleNumber=articleNumber,
+                                originNumber=originNumber,
+                                quantityS=quantityS, salesAmount=salesAmount))
 
     db.session.add_all(records)
     db.session.commit()
 
-    # Insert Consumo
+    # Insert Consumption
     # Read from file .xlsx and insert into database
     df = pandas.read_excel(f"{__FILES_DIRECTORY__}Consumi.xlsx")
     records = []
     for i in range(len(df)):
-        nrMovimentoC = int(df.iloc[i, 0])
-        tipo = df.iloc[i, 1].upper()
-        codiceMP = df.iloc[i, 3]
-        nrArticolo = df.iloc[i, 5]
+        movementNumberC = int(df.iloc[i, 0])
+        budOrCons = df.iloc[i, 1].upper()
+        rawMaterialCode = df.iloc[i, 3]
+        articleNumber = df.iloc[i, 5]
         nrDocumentoODP = df.iloc[i, 6]
-        qta = str(df.iloc[i, 7])
-        qta = qta.replace(",", ".")
-        qta = float(qta)
+        quantityC = str(df.iloc[i, 7])
+        quantityC = quantityC.replace(",", ".")
+        quantityC = float(quantityC)
 
-        importoTotaleC = str(df.iloc[i, 8])
-        importoTotaleC = importoTotaleC.replace(",",".")
-        importoTotaleC = float(importoTotaleC)
-        records.append(Consumo(nrMovimentoC=nrMovimentoC, tipo=tipo, codiceMP=codiceMP, nrArticolo=nrArticolo,
-                                nrDocumentoODP=nrDocumentoODP, qtaC=qta, importoTotaleC=importoTotaleC))
+        totalAmountC = str(df.iloc[i, 8])
+        totalAmountC = totalAmountC.replace(",",".")
+        totalAmountC = float(totalAmountC)
+        records.append(Consumption(movementNumberC=movementNumberC, budOrCons=budOrCons, rawMaterialCode=rawMaterialCode, articleNumber=articleNumber,
+                                nrDocumentoODP=nrDocumentoODP, quantityC=quantityC, totalAmountC=totalAmountC))
 
     db.session.add_all(records)
     db.session.commit()
@@ -100,8 +100,8 @@ def importFromXLSX():
     records = []
     for i in range(len(df)):
         idImpiego = i
-        nrArticolo = df.iloc[i, 0]
-        tipo = df.iloc[i, 1].upper()
+        articleNumber = df.iloc[i, 0]
+        budOrCons = df.iloc[i, 1].upper()
         nrODP = df.iloc[i, 2]
         descrizione = df.iloc[i, 3]
         areaProd = df.iloc[i, 4]
@@ -112,7 +112,7 @@ def importFromXLSX():
         qtaOutput = str(df.iloc[i, 7])
         qtaOutput = qtaOutput.replace(",", ".")
         qtaOutput = float(qtaOutput)
-        records.append(Impiego(idImpiego=idImpiego, nrArticolo=nrArticolo, tipo=tipo, nrODP=nrODP, descrizione=descrizione,
+        records.append(Impiego(idImpiego=idImpiego, articleNumber=articleNumber, budOrCons=budOrCons, nrODP=nrODP, descrizione=descrizione,
                                 areaProd=areaProd, risorsa=risorsa, tempoRisorsa=tempoRisorsa,
                                 qtaOutput=qtaOutput))
 
@@ -152,9 +152,9 @@ def importFromXLSX():
     for article in selectAllArticlesID():
 
         records.append(Article(
-            nrArticolo = article.nrArticolo,
-            analysisVariancesCostCenter = json.dumps(analysisVariancesCostCenterByArticle(article.nrArticolo, totalSalesQuantity)).replace('null', 'None'),
-            analysisVariancesRevenueCenter = json.dumps(analysisVariancesRevenueCenterByArticle(article.nrArticolo, totalSalesQuantity)).replace('null', 'None'),
+            articleNumber = article.articleNumber,
+            analysisVariancesCostCenter = json.dumps(analysisVariancesCostCenterByArticle(article.articleNumber, totalSalesQuantity)).replace('null', 'None'),
+            analysisVariancesRevenueCenter = json.dumps(analysisVariancesRevenueCenterByArticle(article.articleNumber, totalSalesQuantity)).replace('null', 'None'),
         ))
 
     db.session.add_all(records)
@@ -162,39 +162,39 @@ def importFromXLSX():
 
     # Calc analysis variances by market
     # Per ogni market faccio analisi scostamenti (Market)
-    stmt = db.select(Valuta).distinct()
+    stmt = db.select(Currency).distinct()
     for market in db.session.execute(stmt): # Calcoli per ogni market
         # Trovo gli articoli venduti in un mercato
         stmt = (
-            db.select(Vendita.nrArticolo.label("nrArticolo")).distinct()
-            .select_from(Vendita)
-            .join(Cliente, Vendita.nrOrigine == Cliente.codiceCliente)
-            .where(Cliente.valutaCliente == market.Valuta.codValuta)
+            db.select(Sales.articleNumber.label("articleNumber")).distinct()
+            .select_from(Sales)
+            .join(Client, Sales.originNumber == Client.clientCode)
+            .where(Client.currency == market.Currency.currencyCode)
         )
 
         # Faccio analisi scostamenti per mercato (Market)
-        market.Valuta.analysisVariances = json.dumps(calcanalysisVariances(db.session.execute(stmt), False, market.Valuta.codValuta)).replace('null', 'None')
+        market.Currency.analysisVariances = json.dumps(calcanalysisVariances(db.session.execute(stmt), False, market.Currency.currencyCode)).replace('null', 'None')
         db.session.commit()
 
     # Calc analysis variances by client
     # Per ogni cliente faccio analisi scostamenti (Market > Client)
-    for client in db.session.execute(db.select(Cliente)):
+    for client in db.session.execute(db.select(Client)):
         stmt = (
-            db.select(Vendita.nrArticolo.label("nrArticolo")).distinct()
-            .select_from(Vendita)
-            .join(Cliente, Vendita.nrOrigine == Cliente.codiceCliente)
-            .where(Cliente.codiceCliente == client.Cliente.codiceCliente)
-            .where(Cliente.valutaCliente == client.Cliente.valutaCliente)
+            db.select(Sales.articleNumber.label("articleNumber")).distinct()
+            .select_from(Sales)
+            .join(Client, Sales.originNumber == Client.clientCode)
+            .where(Client.clientCode == client.Client.clientCode)
+            .where(Client.currency == client.Client.currency)
         )
         articles = db.session.execute(stmt)
 
-        tempData = {"id": client.Cliente.codiceCliente, "analysisVariances": calcanalysisVariances(articles, False, client.Cliente.valutaCliente, client.Cliente.codiceCliente), "article": []}
+        tempData = {"id": client.Client.clientCode, "analysisVariances": calcanalysisVariances(articles, False, client.Client.currency, client.Client.clientCode), "article": []}
 
         # Per ogni prodotto faccio analisi scostamenti (Market > Client > Article)
         for item in db.session.execute(stmt):
-            tempData["article"].append({"id": item.nrArticolo, "analysisVariances": calcanalysisVariances([item], False, client.Cliente.valutaCliente, client.Cliente.codiceCliente)})
+            tempData["article"].append({"id": item.articleNumber, "analysisVariances": calcanalysisVariances([item], False, client.Client.currency, client.Client.clientCode)})
         
-        client.Cliente.analysisVariances = json.dumps(tempData).replace('null', 'None')
+        client.Client.analysisVariances = json.dumps(tempData).replace('null', 'None')
         db.session.commit()
 
     return "true"

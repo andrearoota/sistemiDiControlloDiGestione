@@ -1,12 +1,14 @@
-from src import db
-from src.model.model import Vendita, Consumo, Impiego, Risorsa, Article, Cliente
-from src.controller.currency import currencyConversion
-from src.controller.sale import countSales
+import ast
+import copy
+
 from flask import render_template
 from sqlalchemy import and_
-import copy
-import ast
 
+from src import db
+from src.controller.currency import currencyConversion
+from src.controller.sale import countSales
+from src.model.model import (Article, Client, Consumption, Impiego, Risorsa,
+                             Sales)
 
 __BUDGET_CONSUNTIVO__ = ["BUDGET", "CONSUNTIVO"]
 
@@ -20,10 +22,10 @@ def selectAllArticlesID():
             Array
 
     '''
-    firstList = db.select((Vendita.nrArticolo.label("nrArticolo"))).distinct()
-    secondList = db.select((Impiego.nrArticolo).label("nrArticolo")).distinct()
+    firstList = db.select((Sales.articleNumber.label("articleNumber"))).distinct()
+    secondList = db.select((Impiego.articleNumber).label("articleNumber")).distinct()
 
-    stmt = db.union(firstList, secondList).order_by("nrArticolo")
+    stmt = db.union(firstList, secondList).order_by("articleNumber")
 
     return db.session.execute(stmt)
 
@@ -66,22 +68,22 @@ def analysisVariancesRevenueCenterByArticle(idArticle, totalSalesQuantity, marke
     # Definizione condizioni aggiuntive
     additionalCondition = []
     if market != None:
-        additionalCondition.append(Cliente.valutaCliente == market)
+        additionalCondition.append(Client.currency == market)
     if client != None:
-        additionalCondition.append(Cliente.codiceCliente == client)
+        additionalCondition.append(Client.clientCode == client)
 
     for type in __BUDGET_CONSUNTIVO__:
         stmt = (
-            db.select(Vendita)
-            .join(Cliente)
-            .where(Vendita.nrArticolo == idArticle)
-            .where(Vendita.tipo == type)
+            db.select(Sales)
+            .join(Client)
+            .where(Sales.articleNumber == idArticle)
+            .where(Sales.budOrCons == type)
             .filter(and_(*additionalCondition))
         )
 
         for sale in db.session.execute(stmt).scalars():
-            analysisVariancesRevenueCenter[type]["unitPrice"] += currencyConversion(sale.importoVenditeVL, sale.nrOrigine, type)
-            analysisVariancesRevenueCenter[type]["quantity"] += sale.qta
+            analysisVariancesRevenueCenter[type]["unitPrice"] += currencyConversion(sale.salesAmount, sale.originNumber, type)
+            analysisVariancesRevenueCenter[type]["quantity"] += sale.quantityS
 
         # Prevent ZeroDivisionError: division by zero
         if analysisVariancesRevenueCenter[type]["quantity"] != 0:
@@ -143,9 +145,9 @@ def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market =
     # Definizione condizioni aggiuntive
     additionalCondition = []
     if market != None:
-        additionalCondition.append(Cliente.valutaCliente == market)
+        additionalCondition.append(Client.currency == market)
     if client != None:
-        additionalCondition.append(Cliente.codiceCliente == client)
+        additionalCondition.append(Client.clientCode == client)
 
 
     for type in __BUDGET_CONSUNTIVO__:
@@ -155,10 +157,10 @@ def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market =
         # il totale venduto come totale di produzione
         stmt = (
             db.select(
-                db.func.sum(Vendita.qta).label("sumQta")
+                db.func.sum(Sales.quantityS).label("sumQta")
             )
-            .where(Vendita.nrArticolo == idArticle)
-            .where(Vendita.tipo == type)
+            .where(Sales.articleNumber == idArticle)
+            .where(Sales.budOrCons == type)
         )
         tempCostCenter["totalQuantity"] = db.session.scalars(stmt).one()
         if tempCostCenter["totalQuantity"] == None or tempCostCenter["totalQuantity"] == 0:
@@ -168,11 +170,11 @@ def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market =
         # Calcolo numero prodotti condizionati dai parametri richiesti
         stmt = (
             db.select(
-                db.func.sum(Vendita.qta).label("sumQta")
+                db.func.sum(Sales.quantityS).label("sumQta")
             )
-            .join(Cliente)
-            .where(Vendita.nrArticolo == idArticle)
-            .where(Vendita.tipo == type)
+            .join(Client)
+            .where(Sales.articleNumber == idArticle)
+            .where(Sales.budOrCons == type)
             .filter(and_(*additionalCondition))
         )
         qtaProduction = db.session.scalars(stmt).one()
@@ -186,10 +188,10 @@ def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market =
         # Calcolo il consumo unitario di materie prime per articolo
         stmt = (
             db.select(
-                db.func.sum(Consumo.importoTotaleC)
+                db.func.sum(Consumption.totalAmountC)
                 )
-            .where(Consumo.nrArticolo == idArticle)
-            .where(Consumo.tipo == type)
+            .where(Consumption.articleNumber == idArticle)
+            .where(Consumption.budOrCons == type)
         )
         tempCostCenter["costs"]["costsRawMaterial"] = db.session.scalars(stmt).one() / tempCostCenter["totalQuantity"] # unit costs
                         
@@ -199,8 +201,8 @@ def analysisVariancesCostCenterByArticle(idArticle, totalSalesQuantity, market =
             db.text("SELECT SUM(costoOrarioBudget * Impiego.tempoRisorsa) AS costoOrarioBudget, SUM(costoOrarioConsuntivo * Impiego.tempoRisorsa) AS costoOrarioConsuntivo \
                 FROM Impiego \
                 INNER JOIN Risorsa ON Risorsa.codRisorsa = Impiego.risorsa AND Risorsa.areaProd = Impiego.areaProd \
-                WHERE Impiego.nrArticolo = :article \
-                AND Impiego.tipo = :type")
+                WHERE Impiego.articleNumber = :article \
+                AND Impiego.budOrCons = :type")
         )
         item = db.session.execute(stmt, {"article": idArticle, "type": type}).one()    
         if type == __BUDGET_CONSUNTIVO__[0]:
@@ -248,7 +250,7 @@ def selectArticle(idArticle):
     '''
     from src.controller.analysisVariances import calcanalysisVariances
     
-    stmt = db.select(Article).where(Article.nrArticolo == idArticle)
+    stmt = db.select(Article).where(Article.articleNumber == idArticle)
     response = db.session.execute(stmt).one() 
 
     return {
