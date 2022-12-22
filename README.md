@@ -5,6 +5,8 @@
 
 Software per il controllo degli scostamenti in un budget.
 
+**Demo online:** [scg.scherma.me](http://scg.scherma.me/)
+
 ## Installazione
 1. Scarica **Python 3.11** dal [sito ufficiale](https://www.python.org/downloads/release/python-3110/).
 2. Installa **GitHub CLI** dalla [repository ufficiale](https://github.com/cli/cli).
