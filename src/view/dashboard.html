@@ -130,7 +130,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Articoli analizzati</h5>
+                        <h5 class="card-title">Analisi articoli</h5>
                         <!-- Article table -->
                         <table id="articlesTable" class="table align-middle mb-0 bg-white" style="width:100%">
                             <thead class="bg-light sticky-top shadow-2">
@@ -217,11 +217,11 @@
         <tr>
             <th scope="col"></th>
             <th scope="col">Budget</th>
-            <th scope="col">Δ</th>
+            <th scope="col">Δ <small>volume</small></th>
             <th scope="col">Mix standard</th>
-            <th scope="col">Δ</th>
+            <th scope="col">Δ <small>mix</small></th>
             <th scope="col">Mix effettivo</th>
-            <th scope="col">Δ</th>
+            <th scope="col">Δ <small>prezzo</small></th>
             <th scope="col">Consuntivo</th>
         </tr>
     </thead>
@@ -421,6 +421,7 @@
         table.getElementsByTagName("th").item(1).remove();
         table.getElementsByTagName("th").item(1).remove();
         table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).innerHTML = "Budget"
 
         let data = response.costi
 
@@ -465,6 +466,7 @@
         table.getElementsByTagName("th").item(1).remove();
         table.getElementsByTagName("th").item(1).remove();
         table.getElementsByTagName("th").item(1).remove();
+        table.getElementsByTagName("th").item(1).innerHTML = "Budget"
 
         data = response.vendite
 
