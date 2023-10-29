@@ -3,9 +3,7 @@
 ![License](https://img.shields.io/github/license/andrearoota/sistemiDiControlloDiGestione)
 
 
-Software per il controllo degli scostamenti in un budget.
-
-**Demo online:** [scg.scherma.me](http://scg.scherma.me/)
+Software per il controllo degli scostamenti in un budget, progetto del corso di laurea triennale di Sistemi di Controllo di Gestione dell'Università degli studi di Bergamo (3° anno).
 
 ## Installazione
 1. Scarica **Python 3.11** dal [sito ufficiale](https://www.python.org/downloads/release/python-3110/).
